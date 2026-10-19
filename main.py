@@ -189,10 +189,23 @@ PRODUCTS = {
 # HOME PAGE
 # ============================================================
 
+def _get_index_html_path():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = [
+        os.path.join(base_dir, "public", "index.html"),
+        os.path.join(base_dir, "index.html"),
+        os.path.join(os.getcwd(), "public", "index.html"),
+        os.path.join(os.getcwd(), "index.html"),
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            return path
+    return "index.html"
+
+
 @app.get("/")
 def home():
-
-    return FileResponse("index.html")
+    return FileResponse(_get_index_html_path())
 
 
 # ============================================================

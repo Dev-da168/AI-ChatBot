@@ -1,0 +1,4369 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Dental Clinic Assistant</title>
+
+
+<style>
+
+/* ============================================================
+   GLOBAL
+============================================================ */
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaf6ff,
+            #ffffff
+        );
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+/* ============================================================
+   WELCOME SCREEN
+============================================================ */
+
+.welcome-screen {
+
+    width: 100%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+.welcome-card {
+
+    width: 480px;
+
+    background: white;
+
+    padding: 50px 40px;
+
+    border-radius: 25px;
+
+    text-align: center;
+
+    box-shadow:
+        0 15px 50px
+        rgba(0, 0, 0, 0.10);
+
+}
+
+
+.clinic-icon {
+
+    width: 100px;
+
+    height: 100px;
+
+    margin: 0 auto 25px;
+
+    background: #2563eb;
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 50px;
+
+}
+
+
+.welcome-card h1 {
+
+    font-size: 30px;
+
+    color: #1e293b;
+
+    margin-bottom: 10px;
+
+}
+
+
+.welcome-card h2 {
+
+    color: #2563eb;
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.welcome-card p {
+
+    color: #64748b;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+
+}
+
+.start-button {
+
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.start-button:hover {
+
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+}
+.language-selector {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 6px;
+
+    margin-bottom: 18px;
+
+}
+
+.language-button {
+
+    width: 32px;
+
+    height: 28px;
+
+    padding: 2px;
+
+    flex: 0 0 32px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: #334155;
+
+    cursor: pointer;
+
+}
+
+.language-button.active {
+
+    border-color: #2563eb;
+
+    background: #eff6ff;
+
+    color: #1d4ed8;
+
+    font-weight: bold;
+
+}
+
+
+/* ============================================================
+   CHAT SCREEN
+============================================================ */
+
+.chat-screen {
+
+    display: none;
+
+    width: 100%;
+
+    height: 100vh;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+.chat-container {
+
+    width: 470px;
+
+    height: 750px;
+
+    max-height: 100vh;
+
+    background: white;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 40px
+        rgba(0, 0, 0, 0.12);
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.chat-header {
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 18px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.back-button {
+
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+}
+
+
+.chat-icon {
+
+    width: 45px;
+
+    height: 45px;
+
+    background: white;
+
+    color: #2563eb;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 23px;
+
+}
+
+
+.header-info {
+
+    flex: 1;
+
+}
+
+
+.header-info h2 {
+
+    font-size: 17px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.header-info p {
+
+    font-size: 11px;
+
+}
+
+
+.online-dot {
+
+    display: inline-block;
+
+    width: 7px;
+
+    height: 7px;
+
+    background: #22c55e;
+
+    border-radius: 50%;
+
+    margin-right: 4px;
+
+}
+
+
+/* ============================================================
+   CHAT BOX
+============================================================ */
+
+.chat-box {
+
+    flex: 1;
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+    background: #f8fafc;
+
+}
+
+
+.message {
+
+    display: flex;
+
+    margin-bottom: 18px;
+
+}
+
+
+.bot-message {
+
+    justify-content: flex-start;
+
+}
+
+
+.user-message {
+
+    justify-content: flex-end;
+
+}
+
+
+.message-wrapper {
+
+    max-width: 86%;
+
+}
+
+
+.message-content {
+
+    padding: 12px 15px;
+
+    border-radius: 16px;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+
+    white-space: pre-wrap;
+
+}
+
+
+.bot-message
+.message-content {
+
+    background: #e7eef8;
+
+    color: #1e293b;
+
+    border-bottom-left-radius: 4px;
+
+}
+
+
+.user-message
+.message-content {
+
+    background: #2563eb;
+
+    color: white;
+
+    border-bottom-right-radius: 4px;
+
+}
+
+
+/* ============================================================
+   OPTIONS
+============================================================ */
+
+.option-container {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+}
+
+
+.option-button {
+
+    width: 100%;
+
+    padding: 11px 14px;
+
+    background: white;
+
+    color: #2563eb;
+
+    border: 1px solid #2563eb;
+
+    border-radius: 10px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+
+}
+
+
+.option-button:hover {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+
+.option-button:disabled {
+
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ============================================================
+   APPOINTMENT CARD
+============================================================ */
+
+.appointment-card {
+
+    width: 100%;
+
+    background: white;
+
+    padding: 16px;
+
+    border-radius: 15px;
+
+    margin-top: 10px;
+
+    border: 1px solid #e2e8f0;
+
+}
+
+
+.appointment-card h3 {
+
+    color: #1e293b;
+
+    margin-bottom: 15px;
+
+    font-size: 16px;
+
+}
+
+.service-choice {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 0;
+
+    color: #334155;
+
+    font-size: 14px;
+
+}
+
+.service-choice input {
+
+    width: 17px;
+
+    height: 17px;
+
+    accent-color: #2563eb;
+
+}
+
+.product-shop {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+}
+
+.product-catalog {
+
+    display: grid;
+
+    gap: 12px;
+
+}
+
+.product-item,
+.product-cart,
+.delivery-checkout {
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 15px;
+
+    padding: 14px;
+
+}
+
+.product-item {
+
+    display: grid;
+
+    grid-template-columns: 76px 1fr;
+
+    gap: 12px;
+
+    align-items: center;
+
+}
+
+.product-image {
+
+    width: 76px;
+
+    height: 76px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+}
+
+.product-info h3,
+.product-cart h3,
+.delivery-checkout h3 {
+
+    margin: 0 0 6px;
+
+    color: #1e293b;
+
+    font-size: 14px;
+
+}
+
+.product-price {
+
+    color: #2563eb;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+}
+
+.product-item-actions {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+.product-quantity {
+
+    width: 64px;
+
+    padding: 9px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+}
+
+.product-add-button,
+.cart-action-button {
+
+    border: 1px solid #2563eb;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #2563eb;
+
+    cursor: pointer;
+
+}
+
+.product-add-button {
+
+    flex: 1;
+
+    padding: 10px;
+
+    font-weight: bold;
+
+}
+
+.product-cart {
+
+    margin-top: 12px;
+
+}
+
+.cart-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    padding: 8px 0;
+
+    color: #334155;
+
+    font-size: 13px;
+
+}
+
+.cart-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+.cart-action-button {
+
+    min-width: 30px;
+
+    min-height: 30px;
+
+}
+
+.cart-total {
+
+    margin-top: 8px;
+
+    padding-top: 10px;
+
+    border-top: 1px solid #e2e8f0;
+
+    color: #1e293b;
+
+    font-weight: bold;
+
+}
+
+.delivery-checkout {
+
+    margin-top: 12px;
+
+}
+
+.order-confirmation {
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 15px;
+
+    background: #f0fdf4;
+
+    color: #166534;
+
+}
+
+.delivery-checkout label {
+
+    display: block;
+
+    margin-top: 12px;
+
+    color: #334155;
+
+    font-size: 13px;
+
+}
+
+.delivery-checkout input,
+.delivery-checkout select,
+.delivery-checkout textarea {
+
+    width: 100%;
+
+    margin-top: 6px;
+
+    padding: 11px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+    font: inherit;
+
+}
+
+.delivery-checkout textarea {
+
+    min-height: 76px;
+
+    resize: vertical;
+
+}
+
+.order-feedback {
+
+    margin-top: 10px;
+
+    color: #dc2626;
+
+    font-size: 13px;
+
+}
+
+
+/* DATE */
+
+.date-input {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+}
+
+
+.date-input:focus {
+
+    outline: none;
+
+    border-color: #2563eb;
+
+}
+
+
+.date-message {
+
+    margin-top: 8px;
+
+    color: #dc2626;
+
+    font-size: 12px;
+
+}
+
+
+/* ============================================================
+   TIME
+============================================================ */
+
+.time-title {
+
+    margin-top: 18px;
+
+    margin-bottom: 10px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    color: #475569;
+
+}
+
+
+.time-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap: 8px;
+
+}
+
+
+.time-button {
+
+    padding: 10px 5px;
+
+    background: white;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    color: #334155;
+
+    font-size: 12px;
+
+}
+
+
+.time-button:hover {
+
+    border-color: #2563eb;
+
+    color: #2563eb;
+
+}
+
+
+.time-button.selected {
+
+    background: #2563eb;
+
+    color: white;
+
+    border-color: #2563eb;
+
+}
+
+
+.time-button.unavailable {
+
+    background: #f1f5f9;
+
+    color: #94a3b8;
+
+    border-color: #e2e8f0;
+
+    cursor: not-allowed;
+
+    text-decoration: line-through;
+
+}
+
+
+/* ============================================================
+   CONTINUE
+============================================================ */
+
+.continue-button {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.continue-button:disabled {
+
+    background: #cbd5e1;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ============================================================
+   PATIENT FORM
+============================================================ */
+
+.patient-form {
+
+    margin-top: 10px;
+
+    background: white;
+
+    padding: 16px;
+
+    border-radius: 15px;
+
+    border: 1px solid #e2e8f0;
+
+}
+
+
+.patient-form h3 {
+
+    margin-bottom: 12px;
+
+    color: #1e293b;
+
+}
+
+
+.patient-form label {
+
+    display: block;
+
+    margin-top: 10px;
+
+    margin-bottom: 5px;
+
+    font-size: 13px;
+
+    color: #475569;
+
+}
+
+
+.patient-form input {
+
+    width: 100%;
+
+    padding: 11px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+    outline: none;
+
+}
+
+
+.patient-form input:focus {
+
+    border-color: #2563eb;
+
+}
+
+
+/* ============================================================
+   CONFIRM CARD
+============================================================ */
+
+.confirm-card {
+
+    background: white;
+
+    padding: 16px;
+
+    border-radius: 15px;
+
+    border: 1px solid #e2e8f0;
+
+    margin-top: 10px;
+
+}
+
+
+.confirm-card h3 {
+
+    margin-bottom: 12px;
+
+    color: #1e293b;
+
+}
+
+
+.confirm-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 9px 0;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    font-size: 13px;
+
+}
+
+
+.confirm-label {
+
+    color: #64748b;
+
+}
+
+
+.confirm-value {
+
+    color: #1e293b;
+
+    font-weight: bold;
+
+    text-align: right;
+
+}
+
+
+.confirm-button {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #16a34a;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+/* ============================================================
+   SUCCESS
+============================================================ */
+
+.success-card {
+
+    background: #f0fdf4;
+
+    border: 1px solid #86efac;
+
+    padding: 16px;
+
+    border-radius: 15px;
+
+    margin-top: 10px;
+
+}
+
+
+.success-card h3 {
+
+    color: #15803d;
+
+    margin-bottom: 10px;
+
+}
+
+
+.success-card p {
+
+    color: #166534;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+}
+
+
+/* ============================================================
+   INPUT AREA
+============================================================ */
+
+.input-area {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 15px;
+
+    background: white;
+
+    border-top: 1px solid #e5e7eb;
+
+}
+
+
+.input-area input {
+
+    flex: 1;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 25px;
+
+    padding: 12px 16px;
+
+    outline: none;
+
+    font-size: 14px;
+
+}
+
+
+.input-area input:focus {
+
+    border-color: #2563eb;
+
+}
+
+
+.send-button {
+
+    width: 45px;
+
+    height: 45px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+}
+
+
+.send-button:disabled {
+
+    background: #94a3b8;
+
+}
+
+
+/* ============================================================
+   TYPING
+============================================================ */
+
+.typing {
+
+    display: flex;
+
+    gap: 4px;
+
+}
+
+
+.typing span {
+
+    width: 7px;
+
+    height: 7px;
+
+    background: #64748b;
+
+    border-radius: 50%;
+
+    animation: typing 1.2s infinite;
+
+}
+
+
+.typing span:nth-child(2) {
+
+    animation-delay: 0.2s;
+
+}
+
+
+.typing span:nth-child(3) {
+
+    animation-delay: 0.4s;
+
+}
+
+
+@keyframes typing {
+
+    0%,
+    60%,
+    100% {
+
+        transform:
+            translateY(0);
+
+    }
+
+    30% {
+
+        transform:
+            translateY(-5px);
+
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 500px) {
+
+    .welcome-card {
+
+        width: 90%;
+
+        padding: 40px 25px;
+
+    }
+
+
+    .chat-container {
+
+        width: 100%;
+
+        height: 100vh;
+
+        border-radius: 0;
+
+    }
+
+
+    .time-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+}
+
+/* ============================================================
+   AI KNOWLEDGE CHAT
+============================================================ */
+
+.ai-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.ai-chat-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+}
+
+.ai-chat-header .chat-icon {
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+}
+
+.ai-message .message-content {
+    background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+    border: 1px solid #bae6fd;
+    color: #0c4a6e;
+    border-bottom-left-radius: 4px;
+}
+
+.ai-disclaimer {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 6px;
+    font-style: italic;
+    padding: 0 2px;
+}
+
+.ai-setup-notice {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #92400e;
+    line-height: 1.6;
+}
+
+.ai-setup-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.ai-setup-notice code {
+    background: rgba(0,0,0,0.08);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.ask-ai-button {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 12px;
+}
+
+.ask-ai-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+}
+
+.ai-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.ai-suggestion {
+    padding: 7px 12px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #0369a1;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.ai-suggestion:hover {
+    background: #0ea5e9;
+    color: white;
+    border-color: #0ea5e9;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ============================================================
+     WELCOME SCREEN
+============================================================ -->
+
+<div
+    class="welcome-screen"
+    id="welcomeScreen"
+>
+
+    <div class="welcome-card">
+        <div
+            class="language-selector"
+            aria-label="Choose language"
+        >
+
+            <button 
+                class="language-button active"
+                id="englishLanguage"
+                type="button"
+                onclick="setLanguage('en')"
+                aria-pressed="true"
+            >
+                🇺🇸
+            </button>
+
+            <button
+                class="language-button"
+                id="khmerLanguage"
+                type="button"
+                onclick="setLanguage('km')"
+                aria-pressed="false"
+            >
+                🇰🇭
+            </button>
+
+        </div>
+
+
+        <div class="clinic-icon">
+            🦷
+        </div>
+
+
+        <h1 id="welcomeTitle">
+            Dental Clinic
+        </h1>
+
+
+        <h2 id="welcomeSubtitle">
+            Customer Service Assistant
+        </h2>
+
+
+        <p id="welcomeDescription">
+            Our virtual assistant can help you
+            make appointments, learn about dental
+            services, and get information about
+            common dental concerns.
+        </p>
+
+        <button
+            class="start-button"
+            id="startClinicBtn"
+            onclick="startChat()"
+        >
+            💬 Clinic Assistant
+        </button>
+
+        <button
+            class="ask-ai-button"
+            id="startAiBtn"
+            onclick="startAiChat()"
+        >
+            🧠 Ask Dental AI
+        </button>
+
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     AI DENTAL KNOWLEDGE SCREEN
+============================================================ -->
+
+<div
+    class="chat-screen"
+    id="aiChatScreen"
+    style="display:none"
+>
+
+    <div class="chat-container">
+
+        <!-- HEADER -->
+        <div class="chat-header ai-chat-header">
+
+            <button
+                class="back-button"
+                onclick="closeAiChat()"
+            >
+                ←
+            </button>
+
+            <div class="chat-icon">
+                🧠
+            </div>
+
+            <div class="header-info">
+                <h2>
+                    Dental AI
+                    <span class="ai-badge">GEMINI</span>
+                </h2>
+                <p>
+                    <span class="online-dot"></span>
+                    <span>Ask me anything dental</span>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- CHAT -->
+        <div
+            class="chat-box"
+            id="aiChatBox"
+        >
+        </div>
+
+        <!-- INPUT -->
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="aiMessageInput"
+                placeholder="e.g. Why do my gums bleed?"
+                autocomplete="off"
+            >
+
+            <button
+                class="send-button"
+                id="aiSendButton"
+                onclick="sendAiMessage()"
+                style="background: linear-gradient(135deg, #0ea5e9, #6366f1);"
+            >
+                ➤
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- original chat screen -->
+<div
+    class="chat-screen"
+    id="chatScreen"
+>
+
+
+    <div class="chat-container">
+
+
+        <!-- HEADER -->
+
+        <div class="chat-header">
+
+
+            <button
+                class="back-button"
+                onclick="goBack()"
+            >
+
+                ←
+
+            </button>
+
+
+            <div class="chat-icon">
+
+                🦷
+
+            </div>
+
+
+            <div class="header-info">
+
+                <h2 id="chatTitle">
+                    Dental Assistant
+                </h2>
+
+
+                <p id="onlineStatus">
+
+                    <span
+                        class="online-dot"
+                    ></span>
+
+                    <span id="onlineText">Online</span>
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- CHAT -->
+
+        <div
+            class="chat-box"
+            id="chatBox"
+        >
+        </div>
+
+
+        <!-- INPUT -->
+
+        <div class="input-area">
+
+
+            <input
+                type="text"
+                id="messageInput"
+                data-i18n-placeholder="messagePlaceholder"
+                placeholder="Ask about your teeth..."
+                autocomplete="off"
+            >
+
+
+            <button
+                class="send-button"
+                id="sendButton"
+                onclick="sendMessage()"
+            >
+
+                ➤
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* ============================================================
+   ELEMENTS
+============================================================ */
+
+const welcomeScreen =
+    document.getElementById(
+        "welcomeScreen"
+    );
+
+
+const chatScreen =
+    document.getElementById(
+        "chatScreen"
+    );
+
+
+const chatBox =
+    document.getElementById(
+        "chatBox"
+    );
+
+
+const messageInput =
+    document.getElementById(
+        "messageInput"
+    );
+
+
+const sendButton =
+    document.getElementById(
+        "sendButton"
+    );
+
+
+/* ============================================================
+   APPOINTMENT STATE
+============================================================ */
+
+let appointment = {
+
+    services: [],
+
+    date: "",
+
+    time: "",
+
+    name: "",
+
+    phone: ""
+
+};
+// Tracks how the user entered the service flow
+let appointmentMode = false;
+let currentLanguage = "en";
+
+const translations = {
+    en: {
+        title: "Dental Clinic",
+        subtitle: "Customer Service Assistant",
+        welcomeDescription: "Our virtual assistant can help you make appointments, learn about dental services, and get information about common dental concerns.",
+        startChat: "Start Chat",
+        chatTitle: "Dental Assistant",
+        online: "Online",
+        messagePlaceholder: "Ask about your teeth...",
+        greeting: "Hello! 👋 Welcome to our dental clinic.\n\nHow can I help you today?",
+        appointmentOption: "📅 Make an Appointment",
+        serviceOption: "🏥 Dental Services",
+        productsOption: "🛍️ Shop Products",
+        priceOption: "💰 Price Information",
+        hoursOption: "🕐 Opening Hours",
+        contactOption: "📞 Contact Us",
+        beginAppointment: "Sure! 📅 Let's make your appointment.\n\nFirst, please select the dental service:",
+        serviceSelectionHint: "Select one or more services:",
+        servicePrompt: "Please select a dental service to learn more:",
+        showServiceDetails: "Show selected service details",
+        showSelectedPrices: "Show selected prices",
+        selectedService: "Excellent! You selected:\n\n🦷 ",
+        selectDate: "\n\nPlease select your preferred date.",
+        calendarTitle: "📅 Select Appointment Date",
+        timesTitle: "🕐 Available Appointment Times",
+        continue: "Continue",
+        sundayClosed: "The clinic is closed on Sunday. Please select another date.",
+        invalidDate: "Invalid date. Please select another date.",
+        noTimes: "No appointment times are available on this date.",
+        unableTimes: "Unable to load appointment times.",
+        chosenDate: "📅 ",
+        chosenTime: "🕐 ",
+        patientPrompt: "Great! 👤 Now I need some information to create your appointment.",
+        patientTitle: "👤 Patient Information",
+        fullName: "Full Name",
+        namePlaceholder: "Enter your full name",
+        phone: "Phone Number",
+        phonePlaceholder: "Enter your phone number",
+        nameRequired: "Please enter your full name.",
+        phoneRequired: "Please enter your phone number.",
+        reviewPrompt: "Please review your appointment information.",
+        summaryTitle: "📋 Appointment Summary",
+        service: "Service",
+        date: "Date",
+        time: "Time",
+        patient: "Patient",
+        confirm: "✅ Confirm Appointment",
+        saving: "Saving...",
+        saveError: "Sorry, something went wrong while saving your appointment.",
+        bookingRejected: "The appointment could not be confirmed. Please choose another date or time.",
+        success: "🎉 Your appointment has been successfully created!",
+        confirmed: "✅ Appointment Confirmed",
+        appointmentId: "Appointment ID:",
+        confirmationNote: "Our clinic will contact you to confirm your appointment.",
+        next: "What would you like to do next?",
+        mainMenu: "⬅️ Main Menu",
+        makeAppointment: "📅 Make Appointment",
+        otherServices: "🏥 Other Services",
+        shopPrompt: "Choose the dental products you would like to buy:",
+        toothpaste: "Toothpaste",
+        toothbrush: "Toothbrush",
+        oralRinse: "Oral Rinse",
+        quantity: "Qty",
+        addToCart: "Add to cart",
+        shoppingCart: "🛒 Your Cart",
+        cartEmpty: "Your cart is empty.",
+        removeItem: "Remove",
+        checkout: "🚚 Choose delivery",
+        deliveryDetails: "🚚 Delivery details",
+        deliveryDate: "Delivery date",
+        deliveryTime: "Delivery time",
+        selectDeliveryTime: "Select a time",
+        customerName: "Your name",
+        customerPhone: "Phone number",
+        deliveryAddress: "Delivery address",
+        addressPlaceholder: "Street, building, area, and any directions",
+        placeOrder: "Place order",
+        orderError: "We couldn't place your order. Check your details and try again.",
+        sundayDelivery: "Delivery is not available on Sunday. Please choose another date.",
+        orderSuccess: "✅ Order placed! Order ID: ",
+        orderTotal: "Total: ",
+        priceLabel: "Price: ",
+        priceListTitle: "Our service price list:",
+        openingHoursTitle: "🕐 Our clinic opening hours:",
+        openingDays: "Monday - Saturday",
+        openingTime: "8:00 AM - 6:00 PM",
+        sundayClosedLabel: "Sunday: Closed",
+        contactTitle: "📞 Contact our dental clinic:",
+        phoneLabel: "Phone: ",
+        emailLabel: "Email: ",
+        checkup: "Dental Check-up",
+        cleaning: "Teeth Cleaning",
+        whitening: "Teeth Whitening",
+        filling: "Dental Filling",
+        extraction: "Tooth Extraction"
+    },
+    km: {
+        title: "គ្លីនិកធ្មេញ",
+        subtitle: "ជំនួយការសេវាកម្មអតិថិជន",
+        welcomeDescription: "ជំនួយការនិម្មិតរបស់យើងអាចជួយកក់ការណាត់ជួប ស្វែងយល់អំពីសេវាកម្មទន្តសាស្ត្រ និងទទួលព័ត៌មានអំពីបញ្ហាសុខភាពមាត់ធ្មេញទូទៅ។",
+        startChat: "ចាប់ផ្តើម",
+        chatTitle: "ជំនួយការទន្តសាស្ត្រ",
+        online: "នៅលើបណ្ដាញ",
+        messagePlaceholder: "សួរអំពីសុខភាពមាត់ធ្មេញ...",
+        greeting: "ជំរាបសួរ! 👋 សូមស្វាគមន៍មកកាន់គ្លីនិកធ្មេញរបស់យើង។\n\nតើខ្ញុំអាចជួយអ្វីអ្នកបានខ្លះ?",
+        appointmentOption: "📅 កក់ការណាត់ជួប",
+        serviceOption: "🏥 សេវាកម្មទន្តសាស្ត្រ",
+        productsOption: "🛍️ ទិញផលិតផល",
+        priceOption: "💰 តម្លៃសេវាកម្ម",
+        hoursOption: "🕐 ម៉ោងបើកបម្រើ",
+        contactOption: "📞 ទាក់ទងយើង",
+        beginAppointment: "ខ្ញុំរីករាយជួយអ្នក! 📅 ដើម្បីកក់ការណាត់ជួប សូមជ្រើសរើសសេវាកម្មទន្តសាស្ត្រដែលអ្នកត្រូវការ៖",
+        serviceSelectionHint: "សូមជ្រើសរើសសេវាកម្មមួយ ឬច្រើន៖",
+        servicePrompt: "សូមជ្រើសរើសសេវាកម្មទន្តសាស្ត្រ ដើម្បីស្វែងយល់បន្ថែម៖",
+        showServiceDetails: "បង្ហាញព័ត៌មានសេវាកម្មដែលបានជ្រើសរើស",
+        showSelectedPrices: "បង្ហាញតម្លៃសេវាកម្មដែលបានជ្រើសរើស",
+        selectedService: "ល្អណាស់! អ្នកបានជ្រើសរើស៖\n\n🦷 ",
+        selectDate: "\n\nសូមជ្រើសរើសកាលបរិច្ឆេទដែលអ្នកចង់បាន។",
+        calendarTitle: "📅 ជ្រើសរើសកាលបរិច្ឆេទណាត់ជួប",
+        timesTitle: "🕐 ម៉ោងណាត់ជួបដែលអាចជ្រើសរើសបាន",
+        continue: "បន្ត",
+        sundayClosed: "គ្លីនិកបិទនៅថ្ងៃអាទិត្យ។ សូមជ្រើសរើសថ្ងៃផ្សេង។",
+        invalidDate: "កាលបរិច្ឆេទមិនត្រឹមត្រូវ។ សូមជ្រើសរើសថ្ងៃផ្សេង។",
+        noTimes: "មិនមានម៉ោងណាត់ជួបនៅថ្ងៃនេះទេ។",
+        unableTimes: "មិនអាចទាញយកម៉ោងណាត់ជួបបានទេ។ សូមព្យាយាមម្តងទៀត។",
+        chosenDate: "📅 ",
+        chosenTime: "🕐 ",
+        patientPrompt: "ល្អណាស់! 👤 សូមផ្តល់ព័ត៌មានខ្លះ ដើម្បីបង្កើតការណាត់ជួបរបស់អ្នក។",
+        patientTitle: "👤 ព័ត៌មានអ្នកជំងឺ",
+        fullName: "ឈ្មោះពេញ",
+        namePlaceholder: "បញ្ចូលឈ្មោះពេញរបស់អ្នក",
+        phone: "លេខទូរស័ព្ទ",
+        phonePlaceholder: "បញ្ចូលលេខទូរស័ព្ទរបស់អ្នក",
+        nameRequired: "សូមបញ្ចូលឈ្មោះពេញរបស់អ្នក។",
+        phoneRequired: "សូមបញ្ចូលលេខទូរស័ព្ទរបស់អ្នក។",
+        reviewPrompt: "សូមពិនិត្យព័ត៌មានការណាត់ជួបរបស់អ្នក។",
+        summaryTitle: "📋 សេចក្តីសង្ខេបការណាត់ជួប",
+        service: "សេវាកម្ម",
+        date: "កាលបរិច្ឆេទ",
+        time: "ម៉ោង",
+        patient: "អ្នកជំងឺ",
+        confirm: "✅ បញ្ជាក់ការណាត់ជួប",
+        saving: "កំពុងរក្សាទុក...",
+        saveError: "សូមអភ័យទោស មានបញ្ហាក្នុងការរក្សាទុកការណាត់ជួប។",
+        bookingRejected: "មិនអាចបញ្ជាក់ការណាត់ជួបបានទេ។ សូមជ្រើសរើសកាលបរិច្ឆេទ ឬម៉ោងផ្សេង។",
+        success: "🎉 ការណាត់ជួបរបស់អ្នកត្រូវបានបង្កើតដោយជោគជ័យ!",
+        confirmed: "✅ បានបញ្ជាក់ការណាត់ជួប",
+        appointmentId: "លេខសម្គាល់ការណាត់ជួប៖",
+        confirmationNote: "គ្លីនិករបស់យើងនឹងទាក់ទងអ្នកដើម្បីបញ្ជាក់ការណាត់ជួប។",
+        next: "តើអ្នកចង់ធ្វើអ្វីបន្ទាប់?",
+        mainMenu: "⬅️ ម៉ឺនុយដើម",
+        makeAppointment: "📅 កក់ការណាត់ជួប",
+        otherServices: "🏥 សេវាកម្មផ្សេងទៀត",
+        shopPrompt: "សូមជ្រើសរើសផលិតផលថែទាំធ្មេញដែលអ្នកចង់ទិញ៖",
+        toothpaste: "ថ្នាំដុសធ្មេញ",
+        toothbrush: "ច្រាសដុសធ្មេញ",
+        oralRinse: "ទឹកខ្ពុរមាត់",
+        quantity: "ចំនួន",
+        addToCart: "ដាក់ក្នុងកន្ត្រក",
+        shoppingCart: "🛒 កន្ត្រកទំនិញ",
+        cartEmpty: "កន្ត្រករបស់អ្នកមិនទាន់មានទំនិញទេ។",
+        removeItem: "លុបចេញ",
+        checkout: "🚚 ជ្រើសរើសការដឹកជញ្ជូន",
+        deliveryDetails: "🚚 ព័ត៌មានដឹកជញ្ជូន",
+        deliveryDate: "កាលបរិច្ឆេទដឹកជញ្ជូន",
+        deliveryTime: "ម៉ោងដឹកជញ្ជូន",
+        selectDeliveryTime: "សូមជ្រើសរើសម៉ោង",
+        customerName: "ឈ្មោះរបស់អ្នក",
+        customerPhone: "លេខទូរស័ព្ទ",
+        deliveryAddress: "អាសយដ្ឋានដឹកជញ្ជូន",
+        addressPlaceholder: "ផ្លូវ អគារ តំបន់ និងការណែនាំអំពីទីតាំង",
+        placeOrder: "បញ្ជាទិញ",
+        orderError: "មិនអាចដាក់ការបញ្ជាទិញបានទេ។ សូមពិនិត្យព័ត៌មាន និងព្យាយាមម្ដងទៀត។",
+        sundayDelivery: "មិនមានការដឹកជញ្ជូននៅថ្ងៃអាទិត្យទេ។ សូមជ្រើសរើសថ្ងៃផ្សេង។",
+        orderSuccess: "✅ បានដាក់ការបញ្ជាទិញ! លេខបញ្ជាទិញ៖ ",
+        orderTotal: "សរុប៖ ",
+        priceLabel: "តម្លៃ៖ ",
+        priceListTitle: "តារាងតម្លៃសេវាកម្មរបស់យើង៖",
+        openingHoursTitle: "🕐 ម៉ោងបើកបម្រើរបស់គ្លីនិក៖",
+        openingDays: "ថ្ងៃច័ន្ទ ដល់ថ្ងៃសៅរ៍",
+        openingTime: "ម៉ោង ៨:០០ ព្រឹក ដល់ ៦:០០ ល្ងាច",
+        sundayClosedLabel: "ថ្ងៃអាទិត្យ៖ បិទ",
+        contactTitle: "📞 ទាក់ទងគ្លីនិកធ្មេញរបស់យើង៖",
+        phoneLabel: "ទូរស័ព្ទ៖ ",
+        emailLabel: "អ៊ីមែល៖ ",
+        checkup: "ពិនិត្យសុខភាពមាត់ធ្មេញ",
+        cleaning: "សម្អាតធ្មេញ",
+        whitening: "ធ្វើឱ្យធ្មេញស",
+        filling: "ប៉ះធ្មេញ",
+        extraction: "ដកធ្មេញ"
+    }
+};
+
+const dentalServices = [
+    { key: "checkup", english: "Dental Check-up" },
+    { key: "cleaning", english: "Teeth Cleaning" },
+    { key: "whitening", english: "Teeth Whitening" },
+    { key: "filling", english: "Dental Filling" },
+    { key: "extraction", english: "Tooth Extraction" }
+];
+
+const products = [
+    { id: "toothpaste", nameKey: "toothpaste", priceCents: 500, image: "/img/toothpaste.avif" },
+    { id: "toothbrush", nameKey: "toothbrush", priceCents: 100, image: "/img/toothbrush.avif" },
+    { id: "oral_rinse", nameKey: "oralRinse", priceCents: 500, image: "/img/oral%20rinse.avif" }
+];
+
+const deliveryTimes = [
+    "8:00 AM",
+    "9:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "1:00 PM",
+    "2:00 PM",
+    "3:00 PM",
+    "4:00 PM",
+    "5:00 PM"
+];
+
+let productCart = {};
+
+const servicePrices = {
+    "Dental Check-up": "$10 USD",
+    "Teeth Cleaning": "$15 USD",
+    "Teeth Whitening": "$50 USD",
+    "Dental Filling": "$35 USD",
+    "Tooth Extraction": "$60 USD"
+};
+
+function text(key) {
+
+    return translations[currentLanguage][key];
+
+}
+
+function mainMenuOptions() {
+
+    return [
+        text("appointmentOption"),
+        text("serviceOption"),
+        text("productsOption"),
+        text("priceOption"),
+        text("hoursOption"),
+        text("contactOption")
+    ];
+
+}
+
+function serviceLabel(service) {
+
+    const item = dentalServices.find(
+        function(candidate) {
+
+            return candidate.english === service;
+
+        }
+    );
+
+    return item
+        ? text(item.key)
+        : service;
+
+}
+
+function serviceLabels(services) {
+
+    return services
+        .map(serviceLabel)
+        .join(", ");
+
+}
+
+function formatAppointmentDate(date) {
+
+    if (currentLanguage !== "km") {
+
+        return date.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            }
+        );
+
+    }
+
+    const weekdays = [
+        "អាទិត្យ",
+        "ចន្ទ",
+        "អង្គារ",
+        "ពុធ",
+        "ព្រហស្បតិ៍",
+        "សុក្រ",
+        "សៅរ៍"
+    ];
+    const months = [
+        "មករា",
+        "កុម្ភៈ",
+        "មីនា",
+        "មេសា",
+        "ឧសភា",
+        "មិថុនា",
+        "កក្កដា",
+        "សីហា",
+        "កញ្ញា",
+        "តុលា",
+        "វិច្ឆិកា",
+        "ធ្នូ"
+    ];
+    const khmerDigits = "០១២៣៤៥៦៧៨៩";
+    const toKhmerDigits = function(value) {
+
+        return String(value).replace(
+            /\d/g,
+            function(digit) {
+
+                return khmerDigits[Number(digit)];
+
+            }
+        );
+
+    };
+
+    return "ថ្ងៃ" + weekdays[date.getDay()]
+        + " ទី" + toKhmerDigits(date.getDate())
+        + " ខែ" + months[date.getMonth()]
+        + " ឆ្នាំ" + toKhmerDigits(date.getFullYear());
+
+}
+
+function setLanguage(language) {
+
+    currentLanguage = language === "km" ? "km" : "en";
+    document.documentElement.lang =
+        currentLanguage === "km" ? "km" : "en";
+
+    document.getElementById("englishLanguage").classList.toggle(
+        "active",
+        currentLanguage === "en"
+    );
+    document.getElementById("englishLanguage").setAttribute(
+        "aria-pressed",
+        String(currentLanguage === "en")
+    );
+    document.getElementById("khmerLanguage").classList.toggle(
+        "active",
+        currentLanguage === "km"
+    );
+    document.getElementById("khmerLanguage").setAttribute(
+        "aria-pressed",
+        String(currentLanguage === "km")
+    );
+
+    document.getElementById("welcomeTitle").textContent = text("title");
+    document.getElementById("welcomeSubtitle").textContent = text("subtitle");
+    document.getElementById("welcomeDescription").textContent = text("welcomeDescription");
+    const appointmentsFeature = document.getElementById("appointmentsFeature");
+    const servicesFeature = document.getElementById("servicesFeature");
+
+    if (appointmentsFeature) {
+        appointmentsFeature.textContent = text("appointmentsFeature");
+    }
+
+    if (servicesFeature) {
+        servicesFeature.textContent = text("servicesFeature");
+    }
+
+    document.querySelector(".start-button").textContent = text("startChat");
+    document.getElementById("chatTitle").textContent = text("chatTitle");
+    document.getElementById("onlineText").textContent = text("online");
+    messageInput.placeholder = text("messagePlaceholder");
+
+}
+
+/* ============================================================
+   START CHAT
+============================================================ */
+
+function startChat() {
+
+    appointmentMode = false;
+
+    welcomeScreen.style.display =
+        "none";
+
+    chatScreen.style.display =
+        "flex";
+
+
+    addMessage(
+        text("greeting"),
+        "bot",
+        mainMenuOptions()
+    );
+
+
+    messageInput.focus();
+
+}
+
+/* ============================================================
+   BACK
+============================================================ */
+
+function goBack() {
+
+    chatScreen.style.display =
+        "none";
+
+    welcomeScreen.style.display =
+        "flex";
+
+    chatBox.innerHTML = "";
+
+    resetAppointment();
+
+}
+
+
+/* ============================================================
+   RESET APPOINTMENT
+============================================================ */
+
+function resetAppointment() {
+
+    appointment = {
+
+        services: [],
+
+        date: "",
+
+        time: "",
+
+        name: "",
+
+        phone: ""
+
+    };
+    appointmentMode = false;
+
+}
+
+
+/* ============================================================
+   SEND MESSAGE
+============================================================ */
+
+async function sendMessage(
+    selectedMessage = null
+) {
+
+    const message =
+        selectedMessage ||
+        messageInput.value.trim();
+
+    if (!message) {
+
+        return;
+
+    }
+
+    addMessage(
+        message,
+        "user"
+    );
+
+    messageInput.value = "";
+
+    /*
+     * APPOINTMENT START
+     */
+
+    if (
+        /make(?: an)? appointment/i.test(message)
+        || (
+            currentLanguage === "km"
+            && message.includes("ណាត់ជួប")
+        )
+    ) {
+
+        if (appointment.services.length > 0) {
+
+            appointmentMode = true;
+            showCalendar();
+            return;
+
+        }
+
+        appointmentMode = true;
+
+        addMessage(
+            text("beginAppointment"),
+            "bot"
+        );
+        showServiceSelection();
+
+        return;
+
+    }
+
+    if (
+        message.includes(text("productsOption"))
+        || /\b(shop|products|buy|order|toothpaste|toothbrush|oral rinse|mouthwash)\b/i.test(message)
+        || (
+            currentLanguage === "km"
+            && (
+                message.includes("ថ្នាំដុសធ្មេញ")
+                || message.includes("ច្រាសដុសធ្មេញ")
+                || message.includes("ទឹកខ្ពុរមាត់")
+                || message.includes("ផលិតផល")
+            )
+        )
+    ) {
+
+        showProductShop();
+        return;
+
+    }
+
+    if (
+        message.includes(text("priceOption"))
+        || /\b(price information|prices?|pricing|costs?|fees?)\b/i.test(message)
+        || (
+            currentLanguage === "km"
+            && (message.includes("តម្លៃ") || message.includes("ថ្លៃ"))
+        )
+    ) {
+
+        showServiceSelection("prices");
+        return;
+
+    }
+
+    if (
+        message.includes(text("serviceOption"))
+        || /\b(dental services|other services)\b/i.test(message)
+        || (
+            currentLanguage === "km"
+            && (
+                message.includes("សេវាកម្មទន្តសាស្ត្រ")
+                || message.includes("សេវាកម្មផ្សេងទៀត")
+            )
+        )
+    ) {
+
+        showServiceSelection("information");
+        return;
+
+    }
+
+    if (
+        currentLanguage === "km"
+        && (
+            (message.includes("ម៉ោង") && message.includes("បើក"))
+            || /\b(opening hours|business hours|when.*open)\b/i.test(message)
+        )
+    ) {
+
+        addMessage(
+            text("openingHoursTitle") + "\n\n"
+            + text("openingDays") + "\n"
+            + text("openingTime") + "\n\n"
+            + text("sundayClosedLabel"),
+            "bot",
+            [text("mainMenu")]
+        );
+
+        return;
+
+    }
+
+    if (
+        currentLanguage === "km"
+        && (
+            message.includes("ទាក់ទង")
+            || message.includes("លេខទូរស័ព្ទ")
+            || /\b(contact|phone|telephone|email)\b/i.test(message)
+        )
+    ) {
+
+        addMessage(
+            text("contactTitle") + "\n\n"
+            + text("phoneLabel") + "+855 12 345 678\n"
+            + text("emailLabel") + "dentalclinic@gmail.com",
+            "bot",
+            [text("mainMenu")]
+        );
+
+        return;
+
+    }
+
+    if (
+        currentLanguage === "km"
+        && message.includes("ម៉ឺនុយដើម")
+    ) {
+
+        addMessage(
+            text("greeting"),
+            "bot",
+            mainMenuOptions()
+        );
+
+        return;
+
+    }
+
+    /*
+     * SERVICE SELECTED
+     */
+
+    const serviceItem =
+        dentalServices.find(
+            function(service) {
+
+                return message.toLowerCase().includes(
+                    service.english.toLowerCase()
+                ) || message.includes(
+                    text(service.key)
+                );
+
+            }
+        );
+
+    if (serviceItem) {
+
+        appointment.services = [serviceItem.english];
+        appointment.date = "";
+        appointment.time = "";
+
+        if (appointmentMode) {
+
+            showCalendar();
+
+        } else {
+
+            showServiceInformation([serviceItem.english]);
+
+        }
+
+        return;
+
+    }
+
+    
+    /*
+     * NORMAL CHATBOT
+     */
+
+    sendButton.disabled = true;
+
+    const typingId = showTyping();
+
+    try {
+
+        const response = await fetch(
+            "/chat",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: message
+                })
+            }
+        );
+
+        if (!response.ok) {
+
+            throw new Error("Server error");
+
+        }
+
+        const data = await response.json();
+
+        removeTyping(typingId);
+
+        addMessage(
+            data.response,
+            "bot",
+            data.options || []
+        );
+
+    } catch (error) {
+
+        console.error(error);
+        removeTyping(typingId);
+
+        addMessage(
+            "Sorry, I couldn't connect to the server. "
+            + "Please try again.",
+            "bot"
+        );
+
+    } finally {
+
+        sendButton.disabled = false;
+        messageInput.focus();
+
+    }
+
+}
+
+function formatProductPrice(priceCents) {
+
+    return "$" + (priceCents / 100).toFixed(2) + " USD";
+
+}
+
+function showProductShop() {
+
+    addMessage(text("shopPrompt"), "bot");
+
+    const shopCard = document.createElement("div");
+    shopCard.className = "product-shop";
+    shopCard.innerHTML = `
+        <div class="product-catalog">
+            ${products.map(function(product) {
+                return `
+                    <article class="product-item">
+                        <img
+                            class="product-image"
+                            src="${product.image}"
+                            alt="${escapeHtml(text(product.nameKey))}"
+                        >
+                        <div class="product-info">
+                            <h3>${escapeHtml(text(product.nameKey))}</h3>
+                            <span class="product-price">${formatProductPrice(product.priceCents)}</span>
+                        </div>
+                        <div class="product-item-actions">
+                            <label>
+                                ${text("quantity")}
+                                <input
+                                    class="product-quantity"
+                                    type="number"
+                                    min="1"
+                                    max="99"
+                                    value="1"
+                                    aria-label="${escapeHtml(text("quantity"))}"
+                                >
+                            </label>
+                            <button
+                                class="product-add-button"
+                                type="button"
+                                data-product-id="${product.id}"
+                            >${text("addToCart")}</button>
+                        </div>
+                    </article>
+                `;
+            }).join("")}
+        </div>
+        <section class="product-cart">
+            <h3>${text("shoppingCart")}</h3>
+            <div class="cart-content"></div>
+        </section>
+    `;
+
+    shopCard.querySelectorAll(".product-add-button").forEach(function(button) {
+        button.addEventListener("click", function() {
+            const quantityInput = button.closest(".product-item")
+                .querySelector(".product-quantity");
+            const quantity = Number(quantityInput.value);
+
+            if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) {
+                quantityInput.reportValidity();
+                return;
+            }
+
+            const productId = button.dataset.productId;
+            productCart[productId] = (productCart[productId] || 0) + quantity;
+            quantityInput.value = "1";
+            updateProductCart(shopCard);
+        });
+
+        updateDeliveryOrderSummary(shopCard);
+
+    });
+
+    shopCard.querySelector(".product-cart").addEventListener("click", function(event) {
+        const button = event.target.closest("[data-cart-action]");
+
+        if (!button) {
+            return;
+        }
+
+        const productId = button.dataset.productId;
+        const action = button.dataset.cartAction;
+
+        if (action === "remove") {
+            delete productCart[productId];
+        } else {
+            const nextQuantity = productCart[productId]
+                + (action === "increase" ? 1 : -1);
+
+            if (nextQuantity < 1) {
+                delete productCart[productId];
+            } else {
+                productCart[productId] = nextQuantity;
+            }
+        }
+
+        updateProductCart(shopCard);
+    });
+
+    chatBox.appendChild(shopCard);
+    updateProductCart(shopCard);
+    scrollToBottom();
+
+}
+
+function productCartTotal() {
+
+    return products.reduce(function(total, product) {
+        return total + product.priceCents * (productCart[product.id] || 0);
+    }, 0);
+
+}
+
+function updateProductCart(shopCard) {
+
+    const cartContent = shopCard.querySelector(".cart-content");
+    const cartProducts = products.filter(function(product) {
+        return productCart[product.id] > 0;
+    });
+
+    if (cartProducts.length === 0) {
+        cartContent.innerHTML = `<p>${text("cartEmpty")}</p>`;
+        const checkout = shopCard.querySelector(".delivery-checkout");
+
+        if (checkout) {
+            checkout.remove();
+        }
+
+        return;
+    }
+
+    cartContent.innerHTML = `
+        ${cartProducts.map(function(product) {
+            return `
+                <div class="cart-row">
+                    <span>${escapeHtml(text(product.nameKey))} × ${productCart[product.id]}</span>
+                    <div class="cart-controls">
+                        <button
+                            class="cart-action-button"
+                            type="button"
+                            data-cart-action="decrease"
+                            data-product-id="${product.id}"
+                            aria-label="${escapeHtml(text("quantity"))} −"
+                        >−</button>
+                        <button
+                            class="cart-action-button"
+                            type="button"
+                            data-cart-action="increase"
+                            data-product-id="${product.id}"
+                            aria-label="${escapeHtml(text("quantity"))} +"
+                        >+</button>
+                        <button
+                            class="cart-action-button"
+                            type="button"
+                            data-cart-action="remove"
+                            data-product-id="${product.id}"
+                            aria-label="${escapeHtml(text("removeItem"))}"
+                        >×</button>
+                    </div>
+                </div>
+            `;
+        }).join("")}
+        <div class="cart-total">${text("orderTotal")}${formatProductPrice(productCartTotal())}</div>
+        <button class="continue-button checkout-button" type="button">
+            ${text("checkout")}
+        </button>
+    `;
+
+    cartContent.querySelector(".checkout-button").addEventListener("click", function() {
+        showDeliveryCheckout(shopCard);
+    });
+
+}
+
+function showDeliveryCheckout(shopCard) {
+
+    const existingCheckout = shopCard.querySelector(".delivery-checkout");
+
+    if (existingCheckout) {
+        existingCheckout.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        return;
+    }
+
+    const today = new Date();
+    const minDate = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, "0"),
+        String(today.getDate()).padStart(2, "0")
+    ].join("-");
+    const checkout = document.createElement("section");
+    checkout.className = "delivery-checkout";
+    checkout.innerHTML = `
+        <h3>${text("deliveryDetails")}</h3>
+        <div class="delivery-order-summary"></div>
+        <form class="delivery-form">
+            <label>
+                ${text("deliveryDate")}
+                <input type="date" name="date" min="${minDate}" required>
+            </label>
+            <label>
+                ${text("deliveryTime")}
+                <select name="time" required>
+                    <option value="">${text("selectDeliveryTime")}</option>
+                    ${deliveryTimes.map(function(time) {
+                        return `<option value="${time}">${time}</option>`;
+                    }).join("")}
+                </select>
+            </label>
+            <label>
+                ${text("customerName")}
+                <input type="text" name="name" maxlength="120" required>
+            </label>
+            <label>
+                ${text("customerPhone")}
+                <input type="tel" name="phone" maxlength="40" required>
+            </label>
+            <label>
+                ${text("deliveryAddress")}
+                <textarea name="address" maxlength="500" placeholder="${text("addressPlaceholder")}" required></textarea>
+            </label>
+            <p class="order-feedback" role="alert"></p>
+            <button class="continue-button" type="submit">${text("placeOrder")}</button>
+        </form>
+    `;
+
+    shopCard.appendChild(checkout);
+    updateDeliveryOrderSummary(shopCard);
+
+    const dateInput = checkout.querySelector('input[name="date"]');
+    dateInput.addEventListener("change", function() {
+        const selectedDate = new Date(dateInput.value + "T00:00:00");
+
+        if (dateInput.value && selectedDate.getDay() === 0) {
+            dateInput.setCustomValidity(text("sundayDelivery"));
+        } else {
+            dateInput.setCustomValidity("");
+        }
+    });
+
+    checkout.querySelector(".delivery-form").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        if (!this.reportValidity()) {
+            return;
+        }
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const feedback = checkout.querySelector(".order-feedback");
+        const formData = new FormData(this);
+        submitButton.disabled = true;
+        feedback.textContent = "";
+
+        try {
+            const response = await fetch("/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    items: products.filter(function(product) {
+                        return productCart[product.id] > 0;
+                    }).map(function(product) {
+                        return {
+                            product_id: product.id,
+                            quantity: productCart[product.id]
+                        };
+                    }),
+                    date: formData.get("date"),
+                    time: formData.get("time"),
+                    name: formData.get("name"),
+                    phone: formData.get("phone"),
+                    address: formData.get("address")
+                })
+            });
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.detail || text("orderError"));
+            }
+
+            const order = data.order;
+            checkout.className = "order-confirmation";
+            checkout.innerHTML = `
+                <h3>${text("orderSuccess")}${escapeHtml(order.id)}</h3>
+                <p>${text("orderTotal")}${formatProductPrice(order.total_cents)}</p>
+                <p>${escapeHtml(order.date)} · ${escapeHtml(order.time)}</p>
+            `;
+            productCart = {};
+            updateProductCart(shopCard);
+            scrollToBottom();
+        } catch (error) {
+            console.error(error);
+            feedback.textContent = text("orderError");
+            submitButton.disabled = false;
+        }
+    });
+
+    scrollToBottom();
+
+}
+
+function updateDeliveryOrderSummary(shopCard) {
+
+    const summary = shopCard.querySelector(".delivery-order-summary");
+
+    if (!summary) {
+        return;
+    }
+
+    summary.textContent = products.filter(function(product) {
+        return productCart[product.id] > 0;
+    }).map(function(product) {
+        return text(product.nameKey)
+            + " × " + productCart[product.id];
+    }).join(", ");
+
+}
+
+function showServiceSelection(mode = "appointment") {
+
+    const card = document.createElement("div");
+    card.className = "appointment-card";
+    const continueLabel = mode === "prices"
+        ? text("showSelectedPrices")
+        : mode === "information"
+            ? text("showServiceDetails")
+            : text("continue");
+    card.innerHTML = `
+        <h3>${text("serviceSelectionHint")}</h3>
+        ${dentalServices.map(function(service) {
+            return `
+                <label class="service-choice">
+                    <input
+                        type="checkbox"
+                        value="${escapeHtml(service.english)}"
+                    >
+                    <span>${escapeHtml(serviceLabel(service.english))}</span>
+                </label>
+            `;
+        }).join("")}
+        <button class="continue-button service-continue" type="button" disabled>
+            ${continueLabel}
+        </button>
+    `;
+
+    chatBox.appendChild(card);
+
+    const continueButton = card.querySelector(".service-continue");
+    card.querySelectorAll('input[type="checkbox"]').forEach(function(input) {
+        input.addEventListener("change", function() {
+            continueButton.disabled =
+                card.querySelectorAll('input[type="checkbox"]:checked').length === 0;
+        });
+    });
+
+    continueButton.addEventListener("click", function() {
+        const selectedServices = Array.from(
+            card.querySelectorAll('input[type="checkbox"]:checked')
+        ).map(function(input) {
+            return input.value;
+        });
+
+        if (mode === "prices") {
+            const priceList = selectedServices.map(function(service) {
+                return serviceLabel(service) + " — " + servicePrices[service];
+            }).join("\n");
+
+            addMessage(
+                text("priceListTitle") + "\n\n" + priceList,
+                "bot",
+                [text("makeAppointment"), text("mainMenu")]
+            );
+            return;
+        }
+
+        if (mode === "information") {
+            showServiceInformation(selectedServices);
+            return;
+        }
+
+        appointment.services = selectedServices;
+        appointment.date = "";
+        appointment.time = "";
+        showCalendar();
+    });
+
+    scrollToBottom();
+
+}
+
+function showServiceInformation(services) {
+
+    const descriptions = {
+        "Dental Check-up": {
+            en: "A dental check-up allows the dentist to examine your teeth and gums and identify possible dental problems.",
+            km: "ការពិនិត្យមាត់ធ្មេញជួយឱ្យទន្តបណ្ឌិតពិនិត្យធ្មេញ និងអញ្ចាញធ្មេញរបស់អ្នក ព្រមទាំងស្វែងរកបញ្ហាដែលអាចកើតមាន។"
+        },
+        "Teeth Cleaning": {
+            en: "Professional teeth cleaning helps remove plaque and tartar and keeps your teeth and gums healthy.",
+            km: "ការសម្អាតធ្មេញដោយអ្នកជំនាញជួយកម្ចាត់កំណកបន្ទះ និងកំបោរ ដើម្បីថែរក្សាសុខភាពធ្មេញ និងអញ្ចាញធ្មេញ។"
+        },
+        "Teeth Whitening": {
+            en: "Professional teeth whitening can help improve the appearance of stained or discolored teeth.",
+            km: "ការធ្វើឱ្យធ្មេញសដោយអ្នកជំនាញអាចជួយកែលម្អស្នាមប្រឡាក់ ឬការប្រែពណ៌របស់ធ្មេញ។"
+        },
+        "Dental Filling": {
+            en: "Dental fillings are commonly used to repair teeth affected by cavities or damage.",
+            km: "ការប៉ះធ្មេញត្រូវបានប្រើជាទូទៅ ដើម្បីជួសជុលធ្មេញដែលពុក ឬខូច។"
+        },
+        "Tooth Extraction": {
+            en: "A dentist may recommend extraction when a tooth cannot be safely repaired.",
+            km: "ទន្តបណ្ឌិតអាចណែនាំឱ្យដកធ្មេញ ប្រសិនបើមិនអាចជួសជុលធ្មេញនោះដោយសុវត្ថិភាពបាន។"
+        }
+    };
+
+    const serviceInformation = services.map(function(service) {
+        const description = descriptions[service][currentLanguage];
+
+        return "🦷 " + serviceLabel(service) + "\n\n"
+            + description + "\n\n"
+            + text("priceLabel") + servicePrices[service];
+    }).join("\n\n");
+
+    addMessage(
+        serviceInformation
+        + (currentLanguage === "km"
+            ? "\n\nតើអ្នកចង់កក់ការណាត់ជួបសម្រាប់សេវាកម្មទាំងនេះទេ?"
+            : "\n\nWould you like to make an appointment for these services?"),
+        "bot",
+        [
+            text("makeAppointment"),
+            text("otherServices"),
+            text("mainMenu")
+        ]
+    );
+
+}
+
+/* ============================================================
+   CALENDAR
+============================================================ */
+
+function showCalendar() {
+
+
+    addMessage(
+        text("selectedService")
+        + serviceLabels(appointment.services)
+        + text("selectDate"),
+        "bot"
+    );
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "appointment-card";
+
+
+    const today =
+        new Date();
+
+
+    const year =
+        today.getFullYear();
+
+
+    const month =
+        String(
+            today.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            today.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const minDate =
+        year
+        + "-"
+        + month
+        + "-"
+        + day;
+
+
+    card.innerHTML = `
+
+        <h3>${text("calendarTitle")}</h3>
+
+        <input
+            type="date"
+            id="appointmentDate"
+            class="date-input"
+            lang="${currentLanguage}"
+            min="${minDate}"
+        >
+
+        <div
+            id="dateMessage"
+            class="date-message"
+        ></div>
+
+        <div
+            id="timeSection"
+            style="display:none;"
+        >
+
+            <div class="time-title">
+
+                ${text("timesTitle")}
+
+            </div>
+
+            <div
+                class="time-grid"
+                id="timeGrid"
+            ></div>
+
+            <button
+                class="continue-button"
+                id="timeContinue"
+                disabled
+            >
+
+                ${text("continue")}
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    chatBox.appendChild(
+        card
+    );
+
+
+    const dateInput =
+        document.getElementById(
+            "appointmentDate"
+        );
+
+
+    dateInput.addEventListener(
+        "change",
+        function() {
+
+            loadAvailableTimes(
+                this.value
+            );
+
+        }
+    );
+
+
+    scrollToBottom();
+
+}
+
+
+/* ============================================================
+   LOAD AVAILABLE TIMES
+============================================================ */
+
+async function loadAvailableTimes(
+    selectedDate
+) {
+
+
+    if (!selectedDate) {
+
+        return;
+
+    }
+
+
+    const date =
+        new Date(
+            selectedDate
+            + "T00:00:00"
+        );
+
+
+    /*
+     * Sunday
+     */
+
+    if (
+        date.getDay() === 0
+    ) {
+
+        document.getElementById(
+            "dateMessage"
+        ).textContent =
+            text("sundayClosed");
+
+        document.getElementById(
+            "timeSection"
+        ).style.display =
+            "none";
+
+        appointment.date =
+            "";
+
+        return;
+
+    }
+
+
+    appointment.date =
+        selectedDate;
+
+
+    appointment.time =
+        "";
+
+
+    document.getElementById(
+        "dateMessage"
+    ).textContent =
+        "";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/appointment/times?selected_date="
+                + encodeURIComponent(
+                    selectedDate
+                )
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data.available
+        ) {
+
+            document.getElementById(
+                "dateMessage"
+            ).textContent =
+                currentLanguage === "km"
+                    ? text("invalidDate")
+                    : data.message;
+
+            return;
+
+        }
+
+
+        const timeGrid =
+            document.getElementById(
+                "timeGrid"
+            );
+
+
+        timeGrid.innerHTML =
+            "";
+
+
+        data.times.forEach(
+            function(time) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.className =
+                    "time-button";
+
+
+                button.textContent =
+                    time;
+
+
+                button.type =
+                    "button";
+
+
+                button.onclick =
+                    function() {
+
+                        selectTime(
+                            button,
+                            time
+                        );
+
+                    };
+
+
+                timeGrid.appendChild(
+                    button
+                );
+
+            }
+        );
+
+
+        if (
+            data.times.length === 0
+        ) {
+
+            timeGrid.innerHTML = `
+
+                <p
+                    style="
+                        grid-column:1/-1;
+                        color:#64748b;
+                        font-size:13px;
+                    "
+                >
+                    ${text("noTimes")}
+                </p>
+
+            `;
+
+        }
+
+
+        document.getElementById(
+            "timeSection"
+        ).style.display =
+            "block";
+
+
+        scrollToBottom();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        document.getElementById(
+            "dateMessage"
+        ).textContent =
+            text("unableTimes");
+
+    }
+
+}
+
+
+/* ============================================================
+   SELECT TIME
+============================================================ */
+
+function selectTime(
+    button,
+    time
+) {
+
+
+    document
+        .querySelectorAll(
+            ".time-button"
+        )
+        .forEach(
+            function(item) {
+
+                item.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    appointment.time =
+        time;
+
+
+    const continueButton =
+        document.getElementById(
+            "timeContinue"
+        );
+
+
+    continueButton.disabled =
+        false;
+
+
+    continueButton.onclick =
+        function() {
+
+            continueAppointment();
+
+        };
+
+}
+
+
+/* ============================================================
+   CONTINUE APPOINTMENT
+============================================================ */
+
+function continueAppointment() {
+
+
+    if (
+        !appointment.date
+        ||
+        !appointment.time
+    ) {
+
+        return;
+
+    }
+
+
+    const date =
+        new Date(
+            appointment.date
+            + "T00:00:00"
+        );
+
+
+    const formattedDate =
+        formatAppointmentDate(date);
+
+
+    addMessage(
+        text("chosenDate")
+        + formattedDate
+        + "\n"
+        + text("chosenTime")
+        + appointment.time,
+        "user"
+    );
+
+
+    showPatientForm();
+
+}
+
+
+/* ============================================================
+   PATIENT FORM
+============================================================ */
+
+function showPatientForm() {
+
+
+    addMessage(
+        text("patientPrompt"),
+        "bot"
+    );
+
+
+    const form =
+        document.createElement(
+            "div"
+        );
+
+
+    form.className =
+        "patient-form";
+
+
+    form.innerHTML = `
+
+        <h3>${text("patientTitle")}</h3>
+
+
+        <label>
+            ${text("fullName")}
+        </label>
+
+
+        <input
+            type="text"
+            id="patientName"
+            placeholder="${text("namePlaceholder")}"
+        >
+
+
+        <label>
+            ${text("phone")}
+        </label>
+
+
+        <input
+            type="tel"
+            id="patientPhone"
+            placeholder="${text("phonePlaceholder")}"
+        >
+
+
+        <button
+            class="continue-button"
+            id="patientContinue"
+        >
+
+            ${text("continue")}
+
+        </button>
+
+    `;
+
+
+    chatBox.appendChild(
+        form
+    );
+
+
+    document
+        .getElementById(
+            "patientContinue"
+        )
+        .onclick =
+        function() {
+
+            reviewAppointment();
+
+        };
+
+
+    scrollToBottom();
+
+}
+
+
+/* ============================================================
+   REVIEW APPOINTMENT
+============================================================ */
+
+function reviewAppointment() {
+
+
+    const name =
+        document
+            .getElementById(
+                "patientName"
+            )
+            .value
+            .trim();
+
+
+    const phone =
+        document
+            .getElementById(
+                "patientPhone"
+            )
+            .value
+            .trim();
+
+
+    if (!name) {
+
+        alert(
+            text("nameRequired")
+        );
+
+        return;
+
+    }
+
+
+    if (!phone) {
+
+        alert(
+            text("phoneRequired")
+        );
+
+        return;
+
+    }
+
+
+    appointment.name =
+        name;
+
+
+    appointment.phone =
+        phone;
+
+
+    const date =
+        new Date(
+            appointment.date
+            + "T00:00:00"
+        );
+
+
+    const formattedDate =
+        formatAppointmentDate(date);
+
+
+    addMessage(
+        text("reviewPrompt"),
+        "bot"
+    );
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "confirm-card";
+
+
+    card.innerHTML = `
+
+        <h3>${text("summaryTitle")}</h3>
+
+
+        <div class="confirm-row">
+
+            <span class="confirm-label">
+                ${text("service")}
+            </span>
+
+            <span class="confirm-value">
+                ${escapeHtml(
+                serviceLabels(appointment.services)
+                )}
+            </span>
+
+        </div>
+
+
+        <div class="confirm-row">
+
+            <span class="confirm-label">
+                ${text("date")}
+            </span>
+
+            <span class="confirm-value">
+                ${escapeHtml(
+                    formattedDate
+                )}
+            </span>
+
+        </div>
+
+
+        <div class="confirm-row">
+
+            <span class="confirm-label">
+                ${text("time")}
+            </span>
+
+            <span class="confirm-value">
+                ${escapeHtml(
+                    appointment.time
+                )}
+            </span>
+
+        </div>
+
+
+        <div class="confirm-row">
+
+            <span class="confirm-label">
+                ${text("patient")}
+            </span>
+
+            <span class="confirm-value">
+                ${escapeHtml(
+                    appointment.name
+                )}
+            </span>
+
+        </div>
+
+
+        <div class="confirm-row">
+
+            <span class="confirm-label">
+                ${text("phone")}
+            </span>
+
+            <span class="confirm-value">
+                ${escapeHtml(
+                    appointment.phone
+                )}
+            </span>
+
+        </div>
+
+
+        <button
+            class="confirm-button"
+            id="confirmButton"
+        >
+
+            ${text("confirm")}
+
+        </button>
+
+    `;
+
+
+    chatBox.appendChild(
+        card
+    );
+
+
+    document
+        .getElementById(
+            "confirmButton"
+        )
+        .onclick =
+        function() {
+
+            confirmAppointment();
+
+        };
+
+
+    scrollToBottom();
+
+}
+
+
+/* ============================================================
+   CONFIRM APPOINTMENT
+============================================================ */
+
+async function confirmAppointment() {
+
+
+    const button =
+        document.getElementById(
+            "confirmButton"
+        );
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        text("saving");
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/appointment",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        services:
+                            appointment.services,
+
+                        date:
+                            appointment.date,
+
+                        time:
+                            appointment.time,
+
+                        name:
+                            appointment.name,
+
+                        phone:
+                            appointment.phone
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data.success
+        ) {
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                text("confirm");
+
+
+            addMessage(
+                "⚠️ "
+                + (
+                    currentLanguage === "km"
+                        ? text("bookingRejected")
+                        : data.message || text("bookingRejected")
+                ),
+                "bot"
+            );
+
+
+            return;
+
+        }
+
+
+        showAppointmentSuccess(
+            data.appointment
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            text("confirm");
+
+
+        addMessage(
+            text("saveError"),
+            "bot"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   SUCCESS
+============================================================ */
+
+function showAppointmentSuccess(
+    savedAppointment
+) {
+
+
+    const date =
+        new Date(
+            savedAppointment.date
+            + "T00:00:00"
+        );
+
+
+    const formattedDate =
+        formatAppointmentDate(date);
+
+
+    addMessage(
+        text("success"),
+        "bot"
+    );
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "success-card";
+
+
+    card.innerHTML = `
+
+        <h3>${text("confirmed")}</h3>
+
+
+        <p>
+
+            <strong>
+                ${text("appointmentId")}
+            </strong>
+
+            ${escapeHtml(
+                savedAppointment.id
+            )}
+
+            <br><br>
+
+
+            <strong>
+                ${text("service")}:
+            </strong>
+
+            ${escapeHtml(
+            serviceLabels(
+                savedAppointment.services || [savedAppointment.service]
+            )
+            )}
+
+            <br>
+
+
+            <strong>
+                ${text("date")}:
+            </strong>
+
+            ${escapeHtml(
+                formattedDate
+            )}
+
+            <br>
+
+
+            <strong>
+                ${text("time")}:
+            </strong>
+
+            ${escapeHtml(
+                savedAppointment.time
+            )}
+
+            <br>
+
+
+            <strong>
+                ${text("patient")}:
+            </strong>
+
+            ${escapeHtml(
+                savedAppointment.name
+            )}
+
+            <br>
+
+
+            <strong>
+                ${text("phone")}:
+            </strong>
+
+            ${escapeHtml(
+                savedAppointment.phone
+            )}
+
+            <br><br>
+
+            ${text("confirmationNote")}
+
+        </p>
+
+    `;
+
+
+    chatBox.appendChild(
+        card
+    );
+
+
+    addMessage(
+        text("next"),
+        "bot",
+        [
+            text("appointmentOption"),
+            text("serviceOption"),
+            text("mainMenu")
+        ]
+    );
+
+
+    resetAppointment();
+
+
+    scrollToBottom();
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHtml(
+    value
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        value;
+
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================================================
+   ADD MESSAGE
+============================================================ */
+
+function addMessage(
+    message,
+    sender,
+    options = []
+) {
+
+
+    const messageDiv =
+        document.createElement(
+            "div"
+        );
+
+
+    messageDiv.className =
+        "message "
+        + sender
+        + "-message";
+
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.className =
+        "message-wrapper";
+
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+
+    content.className =
+        "message-content";
+
+
+    content.textContent =
+        message;
+
+
+    wrapper.appendChild(
+        content
+    );
+
+
+    messageDiv.appendChild(
+        wrapper
+    );
+
+
+    chatBox.appendChild(
+        messageDiv
+    );
+
+
+    /*
+     * OPTIONS
+     */
+
+    if (
+        sender === "bot"
+        &&
+        options.length > 0
+    ) {
+
+
+        const optionContainer =
+            document.createElement(
+                "div"
+            );
+
+
+        optionContainer.className =
+            "option-container";
+
+
+        options.forEach(
+            function(option) {
+
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.className =
+                    "option-button";
+
+
+                button.type =
+                    "button";
+
+
+                button.textContent =
+                    option;
+
+
+                button.onclick =
+                    function() {
+
+
+                        /*
+                         * Disable selected
+                         * options
+                         */
+
+                        optionContainer
+                            .querySelectorAll(
+                                "button"
+                            )
+                            .forEach(
+                                function(btn) {
+
+                                    btn.disabled =
+                                        true;
+
+                                }
+                            );
+
+
+                        sendMessage(
+                            option
+                        );
+
+                    };
+
+
+                optionContainer.appendChild(
+                    button
+                );
+
+            }
+        );
+
+
+        wrapper.appendChild(
+            optionContainer
+        );
+
+    }
+
+
+    scrollToBottom();
+
+}
+
+
+/* ============================================================
+   TYPING
+============================================================ */
+
+function showTyping() {
+
+
+    const id =
+        "typing-"
+        + Date.now();
+
+
+    const messageDiv =
+        document.createElement(
+            "div"
+        );
+
+
+    messageDiv.className =
+        "message bot-message";
+
+
+    messageDiv.id =
+        id;
+
+
+    messageDiv.innerHTML = `
+
+        <div class="message-wrapper">
+
+            <div class="message-content">
+
+                <div class="typing">
+
+                    <span></span>
+
+                    <span></span>
+
+                    <span></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    chatBox.appendChild(
+        messageDiv
+    );
+
+
+    scrollToBottom();
+
+
+    return id;
+
+}
+
+
+/* ============================================================
+   REMOVE TYPING
+============================================================ */
+
+function removeTyping(
+    id
+) {
+
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.remove();
+
+    }
+
+}
+
+
+/* ============================================================
+   SCROLL
+============================================================ */
+
+function scrollToBottom() {
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+
+}
+
+
+/* ============================================================
+   ENTER KEY
+============================================================ */
+
+messageInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   AI DENTAL KNOWLEDGE CHAT
+============================================================ */
+
+const aiChatScreen   = document.getElementById("aiChatScreen");
+const aiChatBox      = document.getElementById("aiChatBox");
+const aiMessageInput = document.getElementById("aiMessageInput");
+const aiSendButton   = document.getElementById("aiSendButton");
+
+if (aiMessageInput) {
+    aiMessageInput.addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendAiMessage();
+            }
+        }
+    );
+}
+
+const AI_SUGGESTIONS = [
+    "How often should I brush?",
+    "What causes tooth decay?",
+    "Why do my gums bleed?",
+    "Is teeth whitening safe?",
+    "What is a root canal?",
+    "How to fix bad breath?",
+    "When should kids see a dentist?",
+    "What foods damage teeth?"
+];
+
+function startAiChat() {
+    const welcome = document.getElementById("welcomeScreen");
+    const aiScreen = document.getElementById("aiChatScreen");
+    const box = document.getElementById("aiChatBox");
+    const input = document.getElementById("aiMessageInput");
+
+    if (welcome) welcome.style.display = "none";
+    if (aiScreen) aiScreen.style.display = "flex";
+
+    if (box && box.children.length === 0) {
+        addAiMessage(
+            "Hi! I'm Dr. Dento 🦷\n\n"
+            + "I can answer your dental health questions — from brushing tips "
+            + "to understanding treatments.\n\n"
+            + "What would you like to know?",
+            false
+        );
+        showAiSuggestions();
+    }
+
+    if (input) input.focus();
+}
+
+function closeAiChat() {
+    const welcome = document.getElementById("welcomeScreen");
+    const aiScreen = document.getElementById("aiChatScreen");
+    if (aiScreen) aiScreen.style.display = "none";
+    if (welcome) welcome.style.display = "flex";
+}
+
+function showAiSuggestions() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "ai-suggestions";
+    AI_SUGGESTIONS.forEach(function(q) {
+        const btn = document.createElement("button");
+        btn.className = "ai-suggestion";
+        btn.textContent = q;
+        btn.onclick = function() {
+            wrapper.remove();
+            sendAiMessage(q);
+        };
+        wrapper.appendChild(btn);
+    });
+    aiChatBox.appendChild(wrapper);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+}
+
+function addAiUserMessage(text) {
+    const div = document.createElement("div");
+    div.className = "message user-message";
+    div.innerHTML = `<div class="message-wrapper"><div class="message-content">${escapeHtml(text)}</div></div>`;
+    aiChatBox.appendChild(div);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+}
+
+function addAiMessage(text, showDisclaimer) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message bot-message ai-message";
+
+    // Render basic markdown: **bold**, bullet lists
+    let html = escapeHtml(text)
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/^- (.+)$/gm, "• $1")
+        .replace(/\n/g, "<br>");
+
+    let disclaimerHtml = "";
+    if (showDisclaimer) {
+        disclaimerHtml = `<div class="ai-disclaimer">⚕️ For educational purposes only. Always consult your dentist.</div>`;
+    }
+
+    wrapper.innerHTML = `
+        <div class="message-wrapper">
+            <div class="message-content">${html}</div>
+            ${disclaimerHtml}
+        </div>
+    `;
+    aiChatBox.appendChild(wrapper);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+}
+
+function showAiTyping() {
+    const id = "ai-typing-" + Date.now();
+    const div = document.createElement("div");
+    div.id = id;
+    div.className = "message bot-message";
+    div.innerHTML = `<div class="message-wrapper"><div class="message-content"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+    aiChatBox.appendChild(div);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+    return id;
+}
+
+async function sendAiMessage(preset) {
+    const message = preset || aiMessageInput.value.trim();
+    if (!message) return;
+
+    addAiUserMessage(message);
+    aiMessageInput.value = "";
+
+    aiSendButton.disabled = true;
+    const typingId = showAiTyping();
+
+    try {
+        const response = await fetch("/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: message })
+        });
+
+        const data = await response.json();
+        removeTyping(typingId);
+
+        if (!response.ok) {
+            // Check if it's a configuration error
+            const detail = data.detail || "";
+            if (detail.includes("GEMINI_API_KEY")) {
+                const notice = document.createElement("div");
+                notice.className = "ai-setup-notice";
+                notice.innerHTML = `
+                    <strong>⚙️ API Key Required</strong>
+                    To use the Dental AI, you need a free Google Gemini API key:<br><br>
+                    1. Visit <strong>aistudio.google.com/app/apikey</strong><br>
+                    2. Click <strong>"Create API key"</strong><br>
+                    3. Copy the key and open the <code>.env</code> file in your project<br>
+                    4. Replace <code>your_api_key_here</code> with your key<br>
+                    5. Restart the server
+                `;
+                const msgDiv = document.createElement("div");
+                msgDiv.className = "message bot-message ai-message";
+                msgDiv.innerHTML = `<div class="message-wrapper"></div>`;
+                msgDiv.querySelector(".message-wrapper").appendChild(notice);
+                aiChatBox.appendChild(msgDiv);
+            } else {
+                addAiMessage("Sorry, I ran into an issue: " + detail, false);
+            }
+        } else {
+            addAiMessage(data.answer, true);
+            showAiSuggestions();
+        }
+
+    } catch (err) {
+        removeTyping(typingId);
+        addAiMessage("Sorry, I couldn't connect to the server. Please try again.", false);
+    } finally {
+        aiSendButton.disabled = false;
+        aiMessageInput.focus();
+    }
+}
+
+</script>
+
+</body>
+
+</html>
