@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -120,9 +120,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.middleware("http")
+async def handle_vercel_prefixes(request: Request, call_next):
+    """Normalize paths forwarded by Vercel serverless functions."""
+    path = request.scope.get("path", "")
+    if path in ("/api", "/api/", "/api/index.py", "/api/index"):
+        request.scope["path"] = "/"
+    elif path.startswith("/api/index.py/"):
+        request.scope["path"] = "/" + path[14:].lstrip("/")
+    elif path.startswith("/api/"):
+        request.scope["path"] = "/" + path[5:].lstrip("/")
+
+    return await call_next(request)
+
+
 IMG_DIR = os.path.join(os.path.dirname(__file__), "img")
+if not os.path.exists(IMG_DIR):
+    IMG_DIR = os.path.join(os.path.dirname(__file__), "public", "img")
+
 if os.path.exists(IMG_DIR):
     app.mount("/img", StaticFiles(directory=IMG_DIR), name="img")
+    app.mount("/api/img", StaticFiles(directory=IMG_DIR), name="api_img")
 
 
 # ============================================================
@@ -204,6 +223,9 @@ def _get_index_html_path():
 
 
 @app.get("/")
+@app.get("/api")
+@app.get("/api/")
+@app.get("/api/index.py")
 def home():
     return FileResponse(_get_index_html_path())
 
