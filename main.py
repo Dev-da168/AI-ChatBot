@@ -92,6 +92,13 @@ def init_db():
                 pass  # column already exists in this session
 
 
+# Ensure tables exist immediately on import (essential for serverless environments)
+try:
+    init_db()
+except Exception:
+    pass
+
+
 # ============================================================
 # FASTAPI APPLICATION
 # ============================================================
@@ -124,13 +131,23 @@ app.add_middleware(
 @app.middleware("http")
 async def handle_vercel_prefixes(request: Request, call_next):
     """Normalize paths forwarded by Vercel serverless functions."""
-    path = request.scope.get("path", "")
-    if path in ("/api", "/api/", "/api/index.py", "/api/index"):
-        request.scope["path"] = "/"
-    elif path.startswith("/api/index.py/"):
-        request.scope["path"] = "/" + path[14:].lstrip("/")
-    elif path.startswith("/api/"):
-        request.scope["path"] = "/" + path[5:].lstrip("/")
+    # When Vercel rewrites requests to /api/index.py, the original requested path
+    # is passed in x-matched-path or x-invoke-path or x-forwarded-uri.
+    original = (
+        request.headers.get("x-matched-path")
+        or request.headers.get("x-invoke-path")
+        or request.headers.get("x-forwarded-uri")
+    )
+    if original and original not in ("/api/index.py", "/api/index", "/api", "/api/"):
+        request.scope["path"] = original.split("?")[0]
+    else:
+        path = request.scope.get("path", "")
+        if path in ("/api", "/api/", "/api/index.py", "/api/index"):
+            request.scope["path"] = "/"
+        elif path.startswith("/api/index.py/"):
+            request.scope["path"] = "/" + path[14:].lstrip("/")
+        elif path.startswith("/api/"):
+            request.scope["path"] = "/" + path[5:].lstrip("/")
 
     return await call_next(request)
 
