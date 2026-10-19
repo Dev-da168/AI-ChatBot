@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, Field
 from datetime import date, datetime, timedelta
 
 
@@ -27,6 +28,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/img", StaticFiles(directory="img"), name="img")
 
 
 # ============================================================
@@ -76,6 +79,31 @@ SERVICES = [
     "🩹 Dental Filling",
     "🦷 Tooth Extraction"
 ]
+
+SERVICE_PRICES = {
+    "Dental Check-up": "$10 USD",
+    "Teeth Cleaning": "$15 USD",
+    "Teeth Whitening": "$50 USD",
+    "Dental Filling": "$35 USD",
+    "Tooth Extraction": "$60 USD"
+}
+
+PRODUCTS = {
+    "toothpaste": {
+        "name": "Toothpaste",
+        "price_cents": 500
+    },
+    "toothbrush": {
+        "name": "Toothbrush",
+        "price_cents": 100
+    },
+    "oral_rinse": {
+        "name": "Oral Rinse",
+        "price_cents": 500
+    }
+}
+
+product_orders = []
 
 
 # ============================================================
@@ -130,6 +158,7 @@ def get_response(message):
             [
                 "📅 Make an Appointment",
                 "🏥 Dental Services",
+                "🛍️ Shop Products",
                 "💰 Price Information",
                 "🕐 Opening Hours",
                 "📞 Contact Us"
@@ -151,6 +180,7 @@ def get_response(message):
             [
                 "📅 Make an Appointment",
                 "🏥 Dental Services",
+                "🛍️ Shop Products",
                 "💰 Price Information",
                 "🕐 Opening Hours",
                 "📞 Contact Us"
@@ -201,6 +231,7 @@ def get_response(message):
             "A dental check-up allows the dentist to "
             "examine your teeth and gums and identify "
             "possible dental problems.\n\n"
+            "Price: " + SERVICE_PRICES["Dental Check-up"] + "\n\n"
             "Would you like to make an appointment?",
             [
                 "📅 make an appointment",
@@ -220,6 +251,7 @@ def get_response(message):
             "Professional dental cleaning helps remove "
             "plaque and tartar that regular brushing may "
             "not completely remove.\n\n"
+            "Price: " + SERVICE_PRICES["Teeth Cleaning"] + "\n\n"
             "Would you like to make an appointment?",
             [
                 "📅 make an appointment",
@@ -238,6 +270,7 @@ def get_response(message):
             "✨ Teeth Whitening\n\n"
             "Professional teeth whitening can help improve "
             "the appearance of stained or discolored teeth.\n\n"
+            "Price: " + SERVICE_PRICES["Teeth Whitening"] + "\n\n"
             "Would you like to make an appointment?",
             [
                 "📅 make an appointment",
@@ -256,6 +289,7 @@ def get_response(message):
             "🩹 Dental Filling\n\n"
             "Dental fillings are commonly used to repair "
             "teeth affected by cavities or damage.\n\n"
+            "Price: " + SERVICE_PRICES["Dental Filling"] + "\n\n"
             "Would you like to make an appointment?",
             [
                 "📅 make an appointment",
@@ -275,6 +309,7 @@ def get_response(message):
             "A dentist may recommend extraction when a tooth "
             "cannot be safely repaired.\n\n"
             "A dental examination is recommended first.\n\n"
+            "Price: " + SERVICE_PRICES["Tooth Extraction"] + "\n\n"
             "Would you like to book a consultation?",
             [
                 "📅 make an appointment",
@@ -294,9 +329,14 @@ def get_response(message):
         or "pricing" in message
     ):
 
+        price_list = "\n".join(
+            service + " — " + SERVICE_PRICES[service_name]
+            for service_name, service in zip(SERVICE_PRICES, SERVICES)
+        )
+
         return (
-            "Which service would you like to know the price of?",
-            SERVICES
+            "Our service price list:\n\n" + price_list,
+            ["🏥 Dental Services", "⬅️ Main Menu"]
         )
 
 
@@ -319,6 +359,7 @@ def get_response(message):
             [
                 "📅 Make an Appointment",
                 "🏥 Dental Services",
+                "🛍️ Shop Products",
                 "📞 Contact Us"
             ]
         )
@@ -342,6 +383,7 @@ def get_response(message):
             [
                 "📅 Make an Appointment",
                 "🏥 Dental Services",
+                "🛍️ Shop Products",
                 "🕐 Opening Hours",
                 "⬅️ Main Menu"
             ]
@@ -395,6 +437,7 @@ def get_response(message):
         [
             "📅 Make an Appointment",
             "🏥 Dental Services",
+            "🛍️ Shop Products",
             "💰 Price Information",
             "🕐 Opening Hours",
             "📞 Contact Us"
@@ -625,4 +668,131 @@ def get_appointments():
 
     return {
         "appointments": appointments
+    }
+
+
+# ============================================================
+# PRODUCT ORDERS
+# ============================================================
+
+class ProductOrderItem(BaseModel):
+
+    product_id: str
+
+    quantity: int = Field(ge=1, le=99)
+
+
+class ProductOrderRequest(BaseModel):
+
+    items: list[ProductOrderItem] = Field(min_length=1, max_length=3)
+
+    date: str
+
+    time: str
+
+    name: str = Field(min_length=1, max_length=120)
+
+    phone: str = Field(min_length=1, max_length=40)
+
+    address: str = Field(min_length=1, max_length=500)
+
+
+DELIVERY_TIMES = [
+    "8:00 AM",
+    "9:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "1:00 PM",
+    "2:00 PM",
+    "3:00 PM",
+    "4:00 PM",
+    "5:00 PM"
+]
+
+
+@app.post("/orders")
+def create_product_order(order: ProductOrderRequest):
+
+    name = order.name.strip()
+    phone = order.phone.strip()
+    address = order.address.strip()
+
+    if not name or not phone or not address:
+        raise HTTPException(
+            status_code=422,
+            detail="Name, phone, and delivery address are required."
+        )
+
+    try:
+        delivery_date = datetime.strptime(
+            order.date,
+            "%Y-%m-%d"
+        ).date()
+    except ValueError as error:
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid delivery date."
+        ) from error
+
+    if delivery_date < date.today():
+        raise HTTPException(
+            status_code=422,
+            detail="Delivery date cannot be in the past."
+        )
+
+    if delivery_date.weekday() == 6:
+        raise HTTPException(
+            status_code=422,
+            detail="Deliveries are not available on Sunday."
+        )
+
+    if order.time not in DELIVERY_TIMES:
+        raise HTTPException(
+            status_code=422,
+            detail="Select a valid delivery time."
+        )
+
+    order_items = []
+    total_cents = 0
+
+    for item in order.items:
+        product = PRODUCTS.get(item.product_id)
+
+        if product is None:
+            raise HTTPException(
+                status_code=422,
+                detail="A selected product is unavailable."
+            )
+
+        line_total_cents = product["price_cents"] * item.quantity
+        total_cents += line_total_cents
+        order_items.append({
+            "product_id": item.product_id,
+            "name": product["name"],
+            "quantity": item.quantity,
+            "unit_price_cents": product["price_cents"],
+            "line_total_cents": line_total_cents
+        })
+
+    order_id = "ORD-" + str(len(product_orders) + 1).zfill(6)
+    saved_order = {
+        "id": order_id,
+        "items": order_items,
+        "total_cents": total_cents,
+        "date": order.date,
+        "time": order.time,
+        "name": name,
+        "phone": phone,
+        "address": address
+    }
+    product_orders.append(saved_order)
+
+    return {
+        "success": True,
+        "order": {
+            "id": order_id,
+            "total_cents": total_cents,
+            "date": order.date,
+            "time": order.time
+        }
     }

@@ -151,45 +151,6 @@ body {
 
 }
 
-
-.features {
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 12px;
-
-    margin-bottom: 30px;
-
-}
-
-
-.feature {
-
-    background: #f1f5f9;
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    color: #334155;
-
-    font-size: 13px;
-
-}
-
-
-.feature-icon {
-
-    font-size: 24px;
-
-    margin-bottom: 6px;
-
-}
-
-
 .start-button {
 
     width: 100%;
@@ -612,6 +573,259 @@ body {
     height: 17px;
 
     accent-color: #2563eb;
+
+}
+
+.product-shop {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+}
+
+.product-catalog {
+
+    display: grid;
+
+    gap: 12px;
+
+}
+
+.product-item,
+.product-cart,
+.delivery-checkout {
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 15px;
+
+    padding: 14px;
+
+}
+
+.product-item {
+
+    display: grid;
+
+    grid-template-columns: 76px 1fr;
+
+    gap: 12px;
+
+    align-items: center;
+
+}
+
+.product-image {
+
+    width: 76px;
+
+    height: 76px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+}
+
+.product-info h3,
+.product-cart h3,
+.delivery-checkout h3 {
+
+    margin: 0 0 6px;
+
+    color: #1e293b;
+
+    font-size: 14px;
+
+}
+
+.product-price {
+
+    color: #2563eb;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+}
+
+.product-item-actions {
+
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+.product-quantity {
+
+    width: 64px;
+
+    padding: 9px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+}
+
+.product-add-button,
+.cart-action-button {
+
+    border: 1px solid #2563eb;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #2563eb;
+
+    cursor: pointer;
+
+}
+
+.product-add-button {
+
+    flex: 1;
+
+    padding: 10px;
+
+    font-weight: bold;
+
+}
+
+.product-cart {
+
+    margin-top: 12px;
+
+}
+
+.cart-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    padding: 8px 0;
+
+    color: #334155;
+
+    font-size: 13px;
+
+}
+
+.cart-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+.cart-action-button {
+
+    min-width: 30px;
+
+    min-height: 30px;
+
+}
+
+.cart-total {
+
+    margin-top: 8px;
+
+    padding-top: 10px;
+
+    border-top: 1px solid #e2e8f0;
+
+    color: #1e293b;
+
+    font-weight: bold;
+
+}
+
+.delivery-checkout {
+
+    margin-top: 12px;
+
+}
+
+.order-confirmation {
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 15px;
+
+    background: #f0fdf4;
+
+    color: #166534;
+
+}
+
+.delivery-checkout label {
+
+    display: block;
+
+    margin-top: 12px;
+
+    color: #334155;
+
+    font-size: 13px;
+
+}
+
+.delivery-checkout input,
+.delivery-checkout select,
+.delivery-checkout textarea {
+
+    width: 100%;
+
+    margin-top: 6px;
+
+    padding: 11px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 9px;
+
+    font: inherit;
+
+}
+
+.delivery-checkout textarea {
+
+    min-height: 76px;
+
+    resize: vertical;
+
+}
+
+.order-feedback {
+
+    margin-top: 10px;
+
+    color: #dc2626;
+
+    font-size: 13px;
 
 }
 
@@ -1203,32 +1417,6 @@ body {
             common dental concerns.
         </p>
 
-
-        <div class="features">
-
-
-            <div class="feature">
-
-                <div class="feature-icon">
-                    📅
-                </div>
-
-                <span id="appointmentsFeature">Appointments</span>
-
-            </div>
-
-            <div class="feature">
-
-                <div class="feature-icon">
-                    🏥
-                </div>
-
-                <span id="servicesFeature">Dental Services</span>
-
-            </div>
-
-        </div>
-
         <button
             class="start-button"
             onclick="startChat()"
@@ -1406,8 +1594,6 @@ const translations = {
         title: "Dental Clinic",
         subtitle: "Customer Service Assistant",
         welcomeDescription: "Our virtual assistant can help you make appointments, learn about dental services, and get information about common dental concerns.",
-        appointmentsFeature: "Appointments",
-        servicesFeature: "Dental Services",
         startChat: "Start Chat",
         chatTitle: "Dental Assistant",
         online: "Online",
@@ -1415,12 +1601,15 @@ const translations = {
         greeting: "Hello! 👋 Welcome to our dental clinic.\n\nHow can I help you today?",
         appointmentOption: "📅 Make an Appointment",
         serviceOption: "🏥 Dental Services",
+        productsOption: "🛍️ Shop Products",
         priceOption: "💰 Price Information",
         hoursOption: "🕐 Opening Hours",
         contactOption: "📞 Contact Us",
         beginAppointment: "Sure! 📅 Let's make your appointment.\n\nFirst, please select the dental service:",
         serviceSelectionHint: "Select one or more services:",
         servicePrompt: "Please select a dental service to learn more:",
+        showServiceDetails: "Show selected service details",
+        showSelectedPrices: "Show selected prices",
         selectedService: "Excellent! You selected:\n\n🦷 ",
         selectDate: "\n\nPlease select your preferred date.",
         calendarTitle: "📅 Select Appointment Date",
@@ -1458,6 +1647,38 @@ const translations = {
         mainMenu: "⬅️ Main Menu",
         makeAppointment: "📅 Make Appointment",
         otherServices: "🏥 Other Services",
+        shopPrompt: "Choose the dental products you would like to buy:",
+        toothpaste: "Toothpaste",
+        toothbrush: "Toothbrush",
+        oralRinse: "Oral Rinse",
+        quantity: "Qty",
+        addToCart: "Add to cart",
+        shoppingCart: "🛒 Your Cart",
+        cartEmpty: "Your cart is empty.",
+        removeItem: "Remove",
+        checkout: "🚚 Choose delivery",
+        deliveryDetails: "🚚 Delivery details",
+        deliveryDate: "Delivery date",
+        deliveryTime: "Delivery time",
+        selectDeliveryTime: "Select a time",
+        customerName: "Your name",
+        customerPhone: "Phone number",
+        deliveryAddress: "Delivery address",
+        addressPlaceholder: "Street, building, area, and any directions",
+        placeOrder: "Place order",
+        orderError: "We couldn't place your order. Check your details and try again.",
+        sundayDelivery: "Delivery is not available on Sunday. Please choose another date.",
+        orderSuccess: "✅ Order placed! Order ID: ",
+        orderTotal: "Total: ",
+        priceLabel: "Price: ",
+        priceListTitle: "Our service price list:",
+        openingHoursTitle: "🕐 Our clinic opening hours:",
+        openingDays: "Monday - Saturday",
+        openingTime: "8:00 AM - 6:00 PM",
+        sundayClosedLabel: "Sunday: Closed",
+        contactTitle: "📞 Contact our dental clinic:",
+        phoneLabel: "Phone: ",
+        emailLabel: "Email: ",
         checkup: "Dental Check-up",
         cleaning: "Teeth Cleaning",
         whitening: "Teeth Whitening",
@@ -1468,21 +1689,22 @@ const translations = {
         title: "គ្លីនិកធ្មេញ",
         subtitle: "ជំនួយការសេវាកម្មអតិថិជន",
         welcomeDescription: "ជំនួយការនិម្មិតរបស់យើងអាចជួយកក់ការណាត់ជួប ស្វែងយល់អំពីសេវាកម្មទន្តសាស្ត្រ និងទទួលព័ត៌មានអំពីបញ្ហាសុខភាពមាត់ធ្មេញទូទៅ។",
-        appointmentsFeature: "ការណាត់ជួប",
-        servicesFeature: "សេវាកម្មទន្តសាស្ត្រ",
-        startChat: "ចាប់ផ្តើមជជែក",
+        startChat: "ចាប់ផ្តើម",
         chatTitle: "ជំនួយការទន្តសាស្ត្រ",
         online: "នៅលើបណ្ដាញ",
         messagePlaceholder: "សួរអំពីសុខភាពមាត់ធ្មេញ...",
         greeting: "ជំរាបសួរ! 👋 សូមស្វាគមន៍មកកាន់គ្លីនិកធ្មេញរបស់យើង។\n\nតើខ្ញុំអាចជួយអ្វីអ្នកបានខ្លះ?",
         appointmentOption: "📅 កក់ការណាត់ជួប",
         serviceOption: "🏥 សេវាកម្មទន្តសាស្ត្រ",
-        priceOption: "💰 ព័ត៌មានតម្លៃ",
+        productsOption: "🛍️ ទិញផលិតផល",
+        priceOption: "💰 តម្លៃសេវាកម្ម",
         hoursOption: "🕐 ម៉ោងបើកបម្រើ",
         contactOption: "📞 ទាក់ទងយើង",
         beginAppointment: "ខ្ញុំរីករាយជួយអ្នក! 📅 ដើម្បីកក់ការណាត់ជួប សូមជ្រើសរើសសេវាកម្មទន្តសាស្ត្រដែលអ្នកត្រូវការ៖",
         serviceSelectionHint: "សូមជ្រើសរើសសេវាកម្មមួយ ឬច្រើន៖",
         servicePrompt: "សូមជ្រើសរើសសេវាកម្មទន្តសាស្ត្រ ដើម្បីស្វែងយល់បន្ថែម៖",
+        showServiceDetails: "បង្ហាញព័ត៌មានសេវាកម្មដែលបានជ្រើសរើស",
+        showSelectedPrices: "បង្ហាញតម្លៃសេវាកម្មដែលបានជ្រើសរើស",
         selectedService: "ល្អណាស់! អ្នកបានជ្រើសរើស៖\n\n🦷 ",
         selectDate: "\n\nសូមជ្រើសរើសកាលបរិច្ឆេទដែលអ្នកចង់បាន។",
         calendarTitle: "📅 ជ្រើសរើសកាលបរិច្ឆេទណាត់ជួប",
@@ -1520,6 +1742,38 @@ const translations = {
         mainMenu: "⬅️ ម៉ឺនុយដើម",
         makeAppointment: "📅 កក់ការណាត់ជួប",
         otherServices: "🏥 សេវាកម្មផ្សេងទៀត",
+        shopPrompt: "សូមជ្រើសរើសផលិតផលថែទាំធ្មេញដែលអ្នកចង់ទិញ៖",
+        toothpaste: "ថ្នាំដុសធ្មេញ",
+        toothbrush: "ច្រាសដុសធ្មេញ",
+        oralRinse: "ទឹកខ្ពុរមាត់",
+        quantity: "ចំនួន",
+        addToCart: "ដាក់ក្នុងកន្ត្រក",
+        shoppingCart: "🛒 កន្ត្រកទំនិញ",
+        cartEmpty: "កន្ត្រករបស់អ្នកមិនទាន់មានទំនិញទេ។",
+        removeItem: "លុបចេញ",
+        checkout: "🚚 ជ្រើសរើសការដឹកជញ្ជូន",
+        deliveryDetails: "🚚 ព័ត៌មានដឹកជញ្ជូន",
+        deliveryDate: "កាលបរិច្ឆេទដឹកជញ្ជូន",
+        deliveryTime: "ម៉ោងដឹកជញ្ជូន",
+        selectDeliveryTime: "សូមជ្រើសរើសម៉ោង",
+        customerName: "ឈ្មោះរបស់អ្នក",
+        customerPhone: "លេខទូរស័ព្ទ",
+        deliveryAddress: "អាសយដ្ឋានដឹកជញ្ជូន",
+        addressPlaceholder: "ផ្លូវ អគារ តំបន់ និងការណែនាំអំពីទីតាំង",
+        placeOrder: "បញ្ជាទិញ",
+        orderError: "មិនអាចដាក់ការបញ្ជាទិញបានទេ។ សូមពិនិត្យព័ត៌មាន និងព្យាយាមម្ដងទៀត។",
+        sundayDelivery: "មិនមានការដឹកជញ្ជូននៅថ្ងៃអាទិត្យទេ។ សូមជ្រើសរើសថ្ងៃផ្សេង។",
+        orderSuccess: "✅ បានដាក់ការបញ្ជាទិញ! លេខបញ្ជាទិញ៖ ",
+        orderTotal: "សរុប៖ ",
+        priceLabel: "តម្លៃ៖ ",
+        priceListTitle: "តារាងតម្លៃសេវាកម្មរបស់យើង៖",
+        openingHoursTitle: "🕐 ម៉ោងបើកបម្រើរបស់គ្លីនិក៖",
+        openingDays: "ថ្ងៃច័ន្ទ ដល់ថ្ងៃសៅរ៍",
+        openingTime: "ម៉ោង ៨:០០ ព្រឹក ដល់ ៦:០០ ល្ងាច",
+        sundayClosedLabel: "ថ្ងៃអាទិត្យ៖ បិទ",
+        contactTitle: "📞 ទាក់ទងគ្លីនិកធ្មេញរបស់យើង៖",
+        phoneLabel: "ទូរស័ព្ទ៖ ",
+        emailLabel: "អ៊ីមែល៖ ",
         checkup: "ពិនិត្យសុខភាពមាត់ធ្មេញ",
         cleaning: "សម្អាតធ្មេញ",
         whitening: "ធ្វើឱ្យធ្មេញស",
@@ -1536,9 +1790,50 @@ const dentalServices = [
     { key: "extraction", english: "Tooth Extraction" }
 ];
 
+const products = [
+    { id: "toothpaste", nameKey: "toothpaste", priceCents: 500, image: "/img/toothpaste.avif" },
+    { id: "toothbrush", nameKey: "toothbrush", priceCents: 100, image: "/img/toothbrush.avif" },
+    { id: "oral_rinse", nameKey: "oralRinse", priceCents: 500, image: "/img/oral%20rinse.avif" }
+];
+
+const deliveryTimes = [
+    "8:00 AM",
+    "9:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "1:00 PM",
+    "2:00 PM",
+    "3:00 PM",
+    "4:00 PM",
+    "5:00 PM"
+];
+
+let productCart = {};
+
+const servicePrices = {
+    "Dental Check-up": "$10 USD",
+    "Teeth Cleaning": "$15 USD",
+    "Teeth Whitening": "$50 USD",
+    "Dental Filling": "$35 USD",
+    "Tooth Extraction": "$60 USD"
+};
+
 function text(key) {
 
     return translations[currentLanguage][key];
+
+}
+
+function mainMenuOptions() {
+
+    return [
+        text("appointmentOption"),
+        text("serviceOption"),
+        text("productsOption"),
+        text("priceOption"),
+        text("hoursOption"),
+        text("contactOption")
+    ];
 
 }
 
@@ -1652,8 +1947,17 @@ function setLanguage(language) {
     document.getElementById("welcomeTitle").textContent = text("title");
     document.getElementById("welcomeSubtitle").textContent = text("subtitle");
     document.getElementById("welcomeDescription").textContent = text("welcomeDescription");
-    document.getElementById("appointmentsFeature").textContent = text("appointmentsFeature");
-    document.getElementById("servicesFeature").textContent = text("servicesFeature");
+    const appointmentsFeature = document.getElementById("appointmentsFeature");
+    const servicesFeature = document.getElementById("servicesFeature");
+
+    if (appointmentsFeature) {
+        appointmentsFeature.textContent = text("appointmentsFeature");
+    }
+
+    if (servicesFeature) {
+        servicesFeature.textContent = text("servicesFeature");
+    }
+
     document.querySelector(".start-button").textContent = text("startChat");
     document.getElementById("chatTitle").textContent = text("chatTitle");
     document.getElementById("onlineText").textContent = text("online");
@@ -1679,18 +1983,7 @@ function startChat() {
     addMessage(
         text("greeting"),
         "bot",
-        currentLanguage === "km"
-            ? [
-                text("appointmentOption"),
-                text("serviceOption")
-            ]
-            : [
-                text("appointmentOption"),
-                text("serviceOption"),
-                text("priceOption"),
-                text("hoursOption"),
-                text("contactOption")
-            ]
+        mainMenuOptions()
     );
 
 
@@ -1799,23 +2092,91 @@ async function sendMessage(
     }
 
     if (
+        message.includes(text("productsOption"))
+        || /\b(shop|products|buy|order|toothpaste|toothbrush|oral rinse|mouthwash)\b/i.test(message)
+        || (
+            currentLanguage === "km"
+            && (
+                message.includes("ថ្នាំដុសធ្មេញ")
+                || message.includes("ច្រាសដុសធ្មេញ")
+                || message.includes("ទឹកខ្ពុរមាត់")
+                || message.includes("ផលិតផល")
+            )
+        )
+    ) {
+
+        showProductShop();
+        return;
+
+    }
+
+    if (
+        message.includes(text("priceOption"))
+        || /\b(price information|prices?|pricing|costs?|fees?)\b/i.test(message)
+        || (
+            currentLanguage === "km"
+            && (message.includes("តម្លៃ") || message.includes("ថ្លៃ"))
+        )
+    ) {
+
+        showServiceSelection("prices");
+        return;
+
+    }
+
+    if (
+        message.includes(text("serviceOption"))
+        || /\b(dental services|other services)\b/i.test(message)
+        || (
+            currentLanguage === "km"
+            && (
+                message.includes("សេវាកម្មទន្តសាស្ត្រ")
+                || message.includes("សេវាកម្មផ្សេងទៀត")
+            )
+        )
+    ) {
+
+        showServiceSelection("information");
+        return;
+
+    }
+
+    if (
         currentLanguage === "km"
         && (
-            message.includes("សេវាកម្មទន្តសាស្ត្រ")
-            || message.includes("សេវាកម្មផ្សេងទៀត")
+            (message.includes("ម៉ោង") && message.includes("បើក"))
+            || /\b(opening hours|business hours|when.*open)\b/i.test(message)
         )
     ) {
 
         addMessage(
-            text("servicePrompt"),
+            text("openingHoursTitle") + "\n\n"
+            + text("openingDays") + "\n"
+            + text("openingTime") + "\n\n"
+            + text("sundayClosedLabel"),
             "bot",
-            dentalServices.map(
-                function(service) {
+            [text("mainMenu")]
+        );
 
-                    return serviceLabel(service.english);
+        return;
 
-                }
-            )
+    }
+
+    if (
+        currentLanguage === "km"
+        && (
+            message.includes("ទាក់ទង")
+            || message.includes("លេខទូរស័ព្ទ")
+            || /\b(contact|phone|telephone|email)\b/i.test(message)
+        )
+    ) {
+
+        addMessage(
+            text("contactTitle") + "\n\n"
+            + text("phoneLabel") + "+855 12 345 678\n"
+            + text("emailLabel") + "dentalclinic@gmail.com",
+            "bot",
+            [text("mainMenu")]
         );
 
         return;
@@ -1830,10 +2191,7 @@ async function sendMessage(
         addMessage(
             text("greeting"),
             "bot",
-            [
-                text("appointmentOption"),
-                text("serviceOption")
-            ]
+            mainMenuOptions()
         );
 
         return;
@@ -1869,7 +2227,7 @@ async function sendMessage(
 
         } else {
 
-            showServiceInformation(serviceItem.english);
+            showServiceInformation([serviceItem.english]);
 
         }
 
@@ -1937,10 +2295,333 @@ async function sendMessage(
 
 }
 
-function showServiceSelection() {
+function formatProductPrice(priceCents) {
+
+    return "$" + (priceCents / 100).toFixed(2) + " USD";
+
+}
+
+function showProductShop() {
+
+    addMessage(text("shopPrompt"), "bot");
+
+    const shopCard = document.createElement("div");
+    shopCard.className = "product-shop";
+    shopCard.innerHTML = `
+        <div class="product-catalog">
+            ${products.map(function(product) {
+                return `
+                    <article class="product-item">
+                        <img
+                            class="product-image"
+                            src="${product.image}"
+                            alt="${escapeHtml(text(product.nameKey))}"
+                        >
+                        <div class="product-info">
+                            <h3>${escapeHtml(text(product.nameKey))}</h3>
+                            <span class="product-price">${formatProductPrice(product.priceCents)}</span>
+                        </div>
+                        <div class="product-item-actions">
+                            <label>
+                                ${text("quantity")}
+                                <input
+                                    class="product-quantity"
+                                    type="number"
+                                    min="1"
+                                    max="99"
+                                    value="1"
+                                    aria-label="${escapeHtml(text("quantity"))}"
+                                >
+                            </label>
+                            <button
+                                class="product-add-button"
+                                type="button"
+                                data-product-id="${product.id}"
+                            >${text("addToCart")}</button>
+                        </div>
+                    </article>
+                `;
+            }).join("")}
+        </div>
+        <section class="product-cart">
+            <h3>${text("shoppingCart")}</h3>
+            <div class="cart-content"></div>
+        </section>
+    `;
+
+    shopCard.querySelectorAll(".product-add-button").forEach(function(button) {
+        button.addEventListener("click", function() {
+            const quantityInput = button.closest(".product-item")
+                .querySelector(".product-quantity");
+            const quantity = Number(quantityInput.value);
+
+            if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) {
+                quantityInput.reportValidity();
+                return;
+            }
+
+            const productId = button.dataset.productId;
+            productCart[productId] = (productCart[productId] || 0) + quantity;
+            quantityInput.value = "1";
+            updateProductCart(shopCard);
+        });
+
+        updateDeliveryOrderSummary(shopCard);
+
+    });
+
+    shopCard.querySelector(".product-cart").addEventListener("click", function(event) {
+        const button = event.target.closest("[data-cart-action]");
+
+        if (!button) {
+            return;
+        }
+
+        const productId = button.dataset.productId;
+        const action = button.dataset.cartAction;
+
+        if (action === "remove") {
+            delete productCart[productId];
+        } else {
+            const nextQuantity = productCart[productId]
+                + (action === "increase" ? 1 : -1);
+
+            if (nextQuantity < 1) {
+                delete productCart[productId];
+            } else {
+                productCart[productId] = nextQuantity;
+            }
+        }
+
+        updateProductCart(shopCard);
+    });
+
+    chatBox.appendChild(shopCard);
+    updateProductCart(shopCard);
+    scrollToBottom();
+
+}
+
+function productCartTotal() {
+
+    return products.reduce(function(total, product) {
+        return total + product.priceCents * (productCart[product.id] || 0);
+    }, 0);
+
+}
+
+function updateProductCart(shopCard) {
+
+    const cartContent = shopCard.querySelector(".cart-content");
+    const cartProducts = products.filter(function(product) {
+        return productCart[product.id] > 0;
+    });
+
+    if (cartProducts.length === 0) {
+        cartContent.innerHTML = `<p>${text("cartEmpty")}</p>`;
+        const checkout = shopCard.querySelector(".delivery-checkout");
+
+        if (checkout) {
+            checkout.remove();
+        }
+
+        return;
+    }
+
+    cartContent.innerHTML = `
+        ${cartProducts.map(function(product) {
+            return `
+                <div class="cart-row">
+                    <span>${escapeHtml(text(product.nameKey))} × ${productCart[product.id]}</span>
+                    <div class="cart-controls">
+                        <button
+                            class="cart-action-button"
+                            type="button"
+                            data-cart-action="decrease"
+                            data-product-id="${product.id}"
+                            aria-label="${escapeHtml(text("quantity"))} −"
+                        >−</button>
+                        <button
+                            class="cart-action-button"
+                            type="button"
+                            data-cart-action="increase"
+                            data-product-id="${product.id}"
+                            aria-label="${escapeHtml(text("quantity"))} +"
+                        >+</button>
+                        <button
+                            class="cart-action-button"
+                            type="button"
+                            data-cart-action="remove"
+                            data-product-id="${product.id}"
+                            aria-label="${escapeHtml(text("removeItem"))}"
+                        >×</button>
+                    </div>
+                </div>
+            `;
+        }).join("")}
+        <div class="cart-total">${text("orderTotal")}${formatProductPrice(productCartTotal())}</div>
+        <button class="continue-button checkout-button" type="button">
+            ${text("checkout")}
+        </button>
+    `;
+
+    cartContent.querySelector(".checkout-button").addEventListener("click", function() {
+        showDeliveryCheckout(shopCard);
+    });
+
+}
+
+function showDeliveryCheckout(shopCard) {
+
+    const existingCheckout = shopCard.querySelector(".delivery-checkout");
+
+    if (existingCheckout) {
+        existingCheckout.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        return;
+    }
+
+    const today = new Date();
+    const minDate = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, "0"),
+        String(today.getDate()).padStart(2, "0")
+    ].join("-");
+    const checkout = document.createElement("section");
+    checkout.className = "delivery-checkout";
+    checkout.innerHTML = `
+        <h3>${text("deliveryDetails")}</h3>
+        <div class="delivery-order-summary"></div>
+        <form class="delivery-form">
+            <label>
+                ${text("deliveryDate")}
+                <input type="date" name="date" min="${minDate}" required>
+            </label>
+            <label>
+                ${text("deliveryTime")}
+                <select name="time" required>
+                    <option value="">${text("selectDeliveryTime")}</option>
+                    ${deliveryTimes.map(function(time) {
+                        return `<option value="${time}">${time}</option>`;
+                    }).join("")}
+                </select>
+            </label>
+            <label>
+                ${text("customerName")}
+                <input type="text" name="name" maxlength="120" required>
+            </label>
+            <label>
+                ${text("customerPhone")}
+                <input type="tel" name="phone" maxlength="40" required>
+            </label>
+            <label>
+                ${text("deliveryAddress")}
+                <textarea name="address" maxlength="500" placeholder="${text("addressPlaceholder")}" required></textarea>
+            </label>
+            <p class="order-feedback" role="alert"></p>
+            <button class="continue-button" type="submit">${text("placeOrder")}</button>
+        </form>
+    `;
+
+    shopCard.appendChild(checkout);
+    updateDeliveryOrderSummary(shopCard);
+
+    const dateInput = checkout.querySelector('input[name="date"]');
+    dateInput.addEventListener("change", function() {
+        const selectedDate = new Date(dateInput.value + "T00:00:00");
+
+        if (dateInput.value && selectedDate.getDay() === 0) {
+            dateInput.setCustomValidity(text("sundayDelivery"));
+        } else {
+            dateInput.setCustomValidity("");
+        }
+    });
+
+    checkout.querySelector(".delivery-form").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        if (!this.reportValidity()) {
+            return;
+        }
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const feedback = checkout.querySelector(".order-feedback");
+        const formData = new FormData(this);
+        submitButton.disabled = true;
+        feedback.textContent = "";
+
+        try {
+            const response = await fetch("/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    items: products.filter(function(product) {
+                        return productCart[product.id] > 0;
+                    }).map(function(product) {
+                        return {
+                            product_id: product.id,
+                            quantity: productCart[product.id]
+                        };
+                    }),
+                    date: formData.get("date"),
+                    time: formData.get("time"),
+                    name: formData.get("name"),
+                    phone: formData.get("phone"),
+                    address: formData.get("address")
+                })
+            });
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.detail || text("orderError"));
+            }
+
+            const order = data.order;
+            checkout.className = "order-confirmation";
+            checkout.innerHTML = `
+                <h3>${text("orderSuccess")}${escapeHtml(order.id)}</h3>
+                <p>${text("orderTotal")}${formatProductPrice(order.total_cents)}</p>
+                <p>${escapeHtml(order.date)} · ${escapeHtml(order.time)}</p>
+            `;
+            productCart = {};
+            updateProductCart(shopCard);
+            scrollToBottom();
+        } catch (error) {
+            console.error(error);
+            feedback.textContent = text("orderError");
+            submitButton.disabled = false;
+        }
+    });
+
+    scrollToBottom();
+
+}
+
+function updateDeliveryOrderSummary(shopCard) {
+
+    const summary = shopCard.querySelector(".delivery-order-summary");
+
+    if (!summary) {
+        return;
+    }
+
+    summary.textContent = products.filter(function(product) {
+        return productCart[product.id] > 0;
+    }).map(function(product) {
+        return text(product.nameKey)
+            + " × " + productCart[product.id];
+    }).join(", ");
+
+}
+
+function showServiceSelection(mode = "appointment") {
 
     const card = document.createElement("div");
     card.className = "appointment-card";
+    const continueLabel = mode === "prices"
+        ? text("showSelectedPrices")
+        : mode === "information"
+            ? text("showServiceDetails")
+            : text("continue");
     card.innerHTML = `
         <h3>${text("serviceSelectionHint")}</h3>
         ${dentalServices.map(function(service) {
@@ -1955,7 +2636,7 @@ function showServiceSelection() {
             `;
         }).join("")}
         <button class="continue-button service-continue" type="button" disabled>
-            ${text("continue")}
+            ${continueLabel}
         </button>
     `;
 
@@ -1970,11 +2651,31 @@ function showServiceSelection() {
     });
 
     continueButton.addEventListener("click", function() {
-        appointment.services = Array.from(
+        const selectedServices = Array.from(
             card.querySelectorAll('input[type="checkbox"]:checked')
         ).map(function(input) {
             return input.value;
         });
+
+        if (mode === "prices") {
+            const priceList = selectedServices.map(function(service) {
+                return serviceLabel(service) + " — " + servicePrices[service];
+            }).join("\n");
+
+            addMessage(
+                text("priceListTitle") + "\n\n" + priceList,
+                "bot",
+                [text("makeAppointment"), text("mainMenu")]
+            );
+            return;
+        }
+
+        if (mode === "information") {
+            showServiceInformation(selectedServices);
+            return;
+        }
+
+        appointment.services = selectedServices;
         appointment.date = "";
         appointment.time = "";
         showCalendar();
@@ -1984,133 +2685,49 @@ function showServiceSelection() {
 
 }
 
-function showServiceInformation(service) {
+function showServiceInformation(services) {
 
-    let information = "";
+    const descriptions = {
+        "Dental Check-up": {
+            en: "A dental check-up allows the dentist to examine your teeth and gums and identify possible dental problems.",
+            km: "ការពិនិត្យមាត់ធ្មេញជួយឱ្យទន្តបណ្ឌិតពិនិត្យធ្មេញ និងអញ្ចាញធ្មេញរបស់អ្នក ព្រមទាំងស្វែងរកបញ្ហាដែលអាចកើតមាន។"
+        },
+        "Teeth Cleaning": {
+            en: "Professional teeth cleaning helps remove plaque and tartar and keeps your teeth and gums healthy.",
+            km: "ការសម្អាតធ្មេញដោយអ្នកជំនាញជួយកម្ចាត់កំណកបន្ទះ និងកំបោរ ដើម្បីថែរក្សាសុខភាពធ្មេញ និងអញ្ចាញធ្មេញ។"
+        },
+        "Teeth Whitening": {
+            en: "Professional teeth whitening can help improve the appearance of stained or discolored teeth.",
+            km: "ការធ្វើឱ្យធ្មេញសដោយអ្នកជំនាញអាចជួយកែលម្អស្នាមប្រឡាក់ ឬការប្រែពណ៌របស់ធ្មេញ។"
+        },
+        "Dental Filling": {
+            en: "Dental fillings are commonly used to repair teeth affected by cavities or damage.",
+            km: "ការប៉ះធ្មេញត្រូវបានប្រើជាទូទៅ ដើម្បីជួសជុលធ្មេញដែលពុក ឬខូច។"
+        },
+        "Tooth Extraction": {
+            en: "A dentist may recommend extraction when a tooth cannot be safely repaired.",
+            km: "ទន្តបណ្ឌិតអាចណែនាំឱ្យដកធ្មេញ ប្រសិនបើមិនអាចជួសជុលធ្មេញនោះដោយសុវត្ថិភាពបាន។"
+        }
+    };
 
-    if (currentLanguage === "km") {
+    const serviceInformation = services.map(function(service) {
+        const description = descriptions[service][currentLanguage];
 
-        const khmerInformation = {
-            "Dental Check-up": "ការពិនិត្យមាត់ធ្មេញជួយឱ្យទន្តបណ្ឌិតពិនិត្យធ្មេញ និងអញ្ចាញធ្មេញរបស់អ្នក ព្រមទាំងស្វែងរកបញ្ហាដែលអាចកើតមាន។",
-            "Teeth Cleaning": "ការសម្អាតធ្មេញដោយអ្នកជំនាញជួយកម្ចាត់កំណកបន្ទះ និងកំបោរ ដើម្បីថែរក្សាសុខភាពធ្មេញ និងអញ្ចាញធ្មេញ។",
-            "Teeth Whitening": "ការធ្វើឱ្យធ្មេញសដោយអ្នកជំនាញអាចជួយកែលម្អស្នាមប្រឡាក់ ឬការប្រែពណ៌របស់ធ្មេញ។",
-            "Dental Filling": "ការប៉ះធ្មេញត្រូវបានប្រើជាទូទៅ ដើម្បីជួសជុលធ្មេញដែលពុក ឬខូច។",
-            "Tooth Extraction": "ទន្តបណ្ឌិតអាចណែនាំឱ្យដកធ្មេញ ប្រសិនបើមិនអាចជួសជុលធ្មេញនោះដោយសុវត្ថិភាពបាន។"
-        };
-
-        addMessage(
-            "🦷 " + serviceLabel(service) + "\n\n"
-            + khmerInformation[service]
-            + "\n\nតើអ្នកចង់កក់ការណាត់ជួបសម្រាប់សេវាកម្មនេះទេ?",
-            "bot",
-            [
-                text("makeAppointment"),
-                text("otherServices"),
-                text("mainMenu")
-            ]
-        );
-
-        return;
-
-    }
-
-    // =====================================================
-    // DENTAL CHECK-UP
-    // =====================================================
-
-    if (
-        service === "Dental Check-up"
-    ) {
-
-        information =
-            "🦷 Dental Check-up\n\n"
-            + "A dental check-up allows the dentist "
-            + "to examine your teeth and gums and "
-            + "identify possible dental problems.";
-
-    }
-
-
-    // =====================================================
-    // TEETH CLEANING
-    // =====================================================
-
-    else if (
-        service === "Teeth Cleaning"
-    ) {
-
-        information =
-            "🪥 Teeth Cleaning\n\n"
-            + "Professional teeth cleaning helps remove "
-            + "plaque and tartar and keeps your teeth "
-            + "and gums healthy.";
-
-    }
-
-
-    // =====================================================
-    // TEETH WHITENING
-    // =====================================================
-
-    else if (
-        service === "Teeth Whitening"
-    ) {
-
-        information =
-            "✨ Teeth Whitening\n\n"
-            + "Professional teeth whitening can help "
-            + "improve the appearance of stained or "
-            + "discolored teeth.";
-
-    }
-
-
-    // =====================================================
-    // DENTAL FILLING
-    // =====================================================
-
-    else if (
-        service === "Dental Filling"
-    ) {
-
-        information =
-            "🩹 Dental Filling\n\n"
-            + "Dental fillings are commonly used to "
-            + "repair teeth affected by cavities "
-            + "or damage.";
-
-    }
-
-
-    // =====================================================
-    // TOOTH EXTRACTION
-    // =====================================================
-
-    else if (
-        service === "Tooth Extraction"
-    ) {
-
-        information =
-            "🦷 Tooth Extraction\n\n"
-            + "A dentist may recommend extraction "
-            + "when a tooth cannot be safely repaired.";
-
-    }
-
-
-    // =====================================================
-    // SHOW INFORMATION
-    // =====================================================
+        return "🦷 " + serviceLabel(service) + "\n\n"
+            + description + "\n\n"
+            + text("priceLabel") + servicePrices[service];
+    }).join("\n\n");
 
     addMessage(
-        information
-        + "\n\nWould you like to make an appointment "
-        + "for this service?",
+        serviceInformation
+        + (currentLanguage === "km"
+            ? "\n\nតើអ្នកចង់កក់ការណាត់ជួបសម្រាប់សេវាកម្មទាំងនេះទេ?"
+            : "\n\nWould you like to make an appointment for these services?"),
         "bot",
         [
-            "📅 Make Appointment",
-            "🏥 Other Services",
-            "⬅️ Main Menu"
+            text("makeAppointment"),
+            text("otherServices"),
+            text("mainMenu")
         ]
     );
 
