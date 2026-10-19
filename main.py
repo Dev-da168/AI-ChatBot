@@ -4,6 +4,92 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from datetime import date, datetime, timedelta
+import sqlite3
+import json
+import os
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+try:
+    from google import genai as _genai_module
+    _GEMINI_AVAILABLE = True
+except ImportError:
+    try:
+        import google.generativeai as _genai_module  # fallback
+        _GEMINI_AVAILABLE = True
+    except ImportError:
+        _GEMINI_AVAILABLE = False
+
+
+# ============================================================
+# DATABASE SETUP  (SQLite — built-in, zero config)
+# ============================================================
+
+# On serverless environments like Vercel, the root filesystem is read-only.
+# We store the SQLite DB in /tmp when running on Vercel.
+if os.environ.get("VERCEL"):
+    DB_PATH = "/tmp/clinic.db"
+else:
+    DB_PATH = os.path.join(os.path.dirname(__file__), "clinic.db")
+
+
+def get_db():
+    """Open a database connection with dict-like row access."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def init_db():
+    """Create tables if they do not already exist."""
+    with get_db() as conn:
+        conn.executescript("""
+            CREATE TABLE IF NOT EXISTS appointments (
+                id          TEXT PRIMARY KEY,
+                services    TEXT NOT NULL,
+                service     TEXT NOT NULL,
+                date        TEXT NOT NULL,
+                time        TEXT NOT NULL,
+                name        TEXT NOT NULL,
+                phone       TEXT NOT NULL,
+                created_at  TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS product_orders (
+                id          TEXT PRIMARY KEY,
+                items       TEXT NOT NULL,
+                total_cents INTEGER NOT NULL,
+                date        TEXT NOT NULL,
+                time        TEXT NOT NULL,
+                name        TEXT NOT NULL,
+                phone       TEXT NOT NULL,
+                address     TEXT NOT NULL,
+                created_at  TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS chat_history (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                session_id  TEXT NOT NULL,
+                role        TEXT NOT NULL,
+                message     TEXT NOT NULL,
+                source      TEXT NOT NULL DEFAULT 'clinic',
+                created_at  TEXT NOT NULL
+            );
+        """)
+        # Migration: add 'source' column to existing databases
+        columns = [
+            row[1]
+            for row in conn.execute("PRAGMA table_info(chat_history)").fetchall()
+        ]
+        if "source" not in columns:
+            try:
+                conn.execute(
+                    "ALTER TABLE chat_history ADD COLUMN source TEXT NOT NULL DEFAULT 'clinic'"
+                )
+            except Exception:
+                pass  # column already exists in this session
 
 
 # ============================================================
@@ -15,6 +101,11 @@ app = FastAPI(
     description="Customer service and appointment chatbot for a dental clinic",
     version="1.0.0"
 )
+
+
+@app.on_event("startup")
+def startup_event():
+    init_db()
 
 
 # ============================================================
@@ -29,7 +120,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/img", StaticFiles(directory="img"), name="img")
+IMG_DIR = os.path.join(os.path.dirname(__file__), "img")
+if os.path.exists(IMG_DIR):
+    app.mount("/img", StaticFiles(directory=IMG_DIR), name="img")
 
 
 # ============================================================
@@ -38,23 +131,12 @@ app.mount("/img", StaticFiles(directory="img"), name="img")
 
 class ChatRequest(BaseModel):
     message: str
+    session_id: str = "default"
 
 
 class ChatResponse(BaseModel):
     response: str
     options: list[str] = []
-
-
-# ============================================================
-# TEMPORARY APPOINTMENT STORAGE
-# ============================================================
-#
-# This stores appointments only while the server is running.
-#
-# Later, we can replace this with MySQL/PostgreSQL.
-#
-
-appointments = []
 
 
 # ============================================================
@@ -102,9 +184,6 @@ PRODUCTS = {
         "price_cents": 500
     }
 }
-
-product_orders = []
-
 
 # ============================================================
 # HOME PAGE
@@ -456,10 +535,56 @@ def chat(request: ChatRequest):
         request.message
     )
 
+    now = datetime.now().isoformat()
+
+    with get_db() as conn:
+        conn.execute(
+            "INSERT INTO chat_history (session_id, role, message, source, created_at) VALUES (?, ?, ?, ?, ?)",
+            (request.session_id, "user", request.message, "clinic", now)
+        )
+        conn.execute(
+            "INSERT INTO chat_history (session_id, role, message, source, created_at) VALUES (?, ?, ?, ?, ?)",
+            (request.session_id, "bot", response, "clinic", now)
+        )
+
     return ChatResponse(
         response=response,
         options=options
     )
+
+
+# ============================================================
+# CHAT HISTORY
+# ============================================================
+
+@app.get("/chat/history")
+def chat_history(session_id: str = "default", limit: int = 50):
+    """Return the last *limit* messages for a given session."""
+    with get_db() as conn:
+        rows = conn.execute(
+            """
+            SELECT id, session_id, role, message, created_at
+            FROM chat_history
+            WHERE session_id = ?
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (session_id, limit)
+        ).fetchall()
+
+    history = [dict(row) for row in reversed(rows)]
+    return {"session_id": session_id, "history": history}
+
+
+@app.delete("/chat/history")
+def clear_chat_history(session_id: str = "default"):
+    """Delete all stored messages for a given session."""
+    with get_db() as conn:
+        conn.execute(
+            "DELETE FROM chat_history WHERE session_id = ?",
+            (session_id,)
+        )
+    return {"success": True, "message": f"History cleared for session '{session_id}'."}
 
 
 # ============================================================
@@ -510,18 +635,15 @@ def appointment_times(selected_date: str):
     ]
 
 
-    # Remove already booked times
+    # Remove already booked times (from database)
 
-    booked_times = []
+    with get_db() as conn:
+        booked_rows = conn.execute(
+            "SELECT time FROM appointments WHERE date = ?",
+            (selected_date,)
+        ).fetchall()
 
-    for appointment in appointments:
-
-        if appointment["date"] == selected_date:
-
-            booked_times.append(
-                appointment["time"]
-            )
-
+    booked_times = {row["time"] for row in booked_rows}
 
     available_times = [
         time
@@ -600,21 +722,19 @@ def create_appointment(
         }
 
 
-    # Check if time is already booked
+    # Check if time is already booked (from database)
 
-    for existing in appointments:
+    with get_db() as conn:
+        existing = conn.execute(
+            "SELECT id FROM appointments WHERE date = ? AND time = ?",
+            (appointment.date, appointment.time)
+        ).fetchone()
 
-        if (
-            existing["date"]
-            == appointment.date
-            and existing["time"]
-            == appointment.time
-        ):
-
-            return {
-                "success": False,
-                "message": "This time slot is already booked."
-            }
+    if existing:
+        return {
+            "success": False,
+            "message": "This time slot is already booked."
+        }
 
 
     # Create appointment ID
@@ -624,38 +744,41 @@ def create_appointment(
         + datetime.now().strftime("%Y%m%d%H%M%S")
     )
 
+    service_str = ", ".join(services)
+    now = datetime.now().isoformat()
+
+    with get_db() as conn:
+        conn.execute(
+            """
+            INSERT INTO appointments (id, services, service, date, time, name, phone, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                appointment_id,
+                json.dumps(services),
+                service_str,
+                appointment.date,
+                appointment.time,
+                appointment.name,
+                appointment.phone,
+                now
+            )
+        )
 
     new_appointment = {
-
         "id": appointment_id,
-
         "services": services,
-
-        "service": ", ".join(services),
-
+        "service": service_str,
         "date": appointment.date,
-
         "time": appointment.time,
-
         "name": appointment.name,
-
         "phone": appointment.phone
     }
 
-
-    appointments.append(
-        new_appointment
-    )
-
-
     return {
-
         "success": True,
-
         "message": "Appointment successfully created.",
-
         "appointment": new_appointment
-
     }
 
 
@@ -666,9 +789,18 @@ def create_appointment(
 @app.get("/appointments")
 def get_appointments():
 
-    return {
-        "appointments": appointments
-    }
+    with get_db() as conn:
+        rows = conn.execute(
+            "SELECT * FROM appointments ORDER BY date, time"
+        ).fetchall()
+
+    result = []
+    for row in rows:
+        item = dict(row)
+        item["services"] = json.loads(item["services"])
+        result.append(item)
+
+    return {"appointments": result}
 
 
 # ============================================================
@@ -774,18 +906,29 @@ def create_product_order(order: ProductOrderRequest):
             "line_total_cents": line_total_cents
         })
 
-    order_id = "ORD-" + str(len(product_orders) + 1).zfill(6)
-    saved_order = {
-        "id": order_id,
-        "items": order_items,
-        "total_cents": total_cents,
-        "date": order.date,
-        "time": order.time,
-        "name": name,
-        "phone": phone,
-        "address": address
-    }
-    product_orders.append(saved_order)
+    now = datetime.now().isoformat()
+
+    with get_db() as conn:
+        count = conn.execute("SELECT COUNT(*) FROM product_orders").fetchone()[0]
+        order_id = "ORD-" + str(count + 1).zfill(6)
+
+        conn.execute(
+            """
+            INSERT INTO product_orders (id, items, total_cents, date, time, name, phone, address, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                order_id,
+                json.dumps(order_items),
+                total_cents,
+                order.date,
+                order.time,
+                name,
+                phone,
+                address,
+                now
+            )
+        )
 
     return {
         "success": True,
@@ -796,3 +939,141 @@ def create_product_order(order: ProductOrderRequest):
             "time": order.time
         }
     }
+
+
+# ============================================================
+# VIEW PRODUCT ORDERS
+# ============================================================
+
+@app.get("/orders")
+def get_product_orders():
+
+    with get_db() as conn:
+        rows = conn.execute(
+            "SELECT * FROM product_orders ORDER BY created_at DESC"
+        ).fetchall()
+
+    result = []
+    for row in rows:
+        item = dict(row)
+        item["items"] = json.loads(item["items"])
+        result.append(item)
+
+    return {"orders": result}
+
+
+# ============================================================
+# DENTAL KNOWLEDGE AI  (Gemini)
+# ============================================================
+
+DENTAL_SYSTEM_PROMPT = """
+You are Dr. Dento, a friendly and knowledgeable dental health assistant 
+working for a dental clinic. Your role is ONLY to answer questions about:
+- Dental health, oral hygiene, and tooth care
+- Common dental conditions and symptoms
+- Dental procedures and treatments
+- Dental products and their usage
+- When to see a dentist and what to expect
+
+Rules:
+1. ONLY answer dental/oral-health questions. If the user asks about 
+   anything unrelated, kindly redirect them: say you can only help 
+   with dental health questions.
+2. Always recommend consulting a dentist for diagnosis or treatment.
+3. Be warm, clear, and easy to understand — avoid overly technical jargon.
+4. Keep answers concise (2-5 short paragraphs max).
+5. Never diagnose a patient. Suggest professional evaluation instead.
+6. Use emojis sparingly (1-2 per response) to keep things friendly.
+"""
+
+
+class AskRequest(BaseModel):
+    question: str
+    session_id: str = "default"
+
+
+class AskResponse(BaseModel):
+    answer: str
+    disclaimer: str = (
+        "This information is for educational purposes only. "
+        "Please consult a qualified dentist for personal medical advice."
+    )
+
+
+@app.post("/ask", response_model=AskResponse)
+def ask_dental(request: AskRequest):
+    """Answer dental knowledge questions using Google Gemini."""
+
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+
+    if not _GEMINI_AVAILABLE:
+        raise HTTPException(
+            status_code=503,
+            detail="AI service unavailable. Install google-genai."
+        )
+
+    if not api_key or api_key == "your_api_key_here":
+        raise HTTPException(
+            status_code=503,
+            detail="GEMINI_API_KEY is not configured. Please add it to your .env file."
+        )
+
+    if not request.question.strip():
+        raise HTTPException(
+            status_code=422,
+            detail="Question cannot be empty."
+        )
+
+    try:
+        # Build conversation history from DB
+        with get_db() as conn:
+            past = conn.execute(
+                """
+                SELECT role, message FROM chat_history
+                WHERE session_id = ? AND source = 'dental_ai'
+                ORDER BY id DESC LIMIT 6
+                """,
+                (request.session_id,)
+            ).fetchall()
+
+        contents = []
+        for row in reversed(past):
+            contents.append({
+                "role": "user" if row["role"] == "user" else "model",
+                "parts": [{"text": row["message"]}]
+            })
+        # Add the current user message
+        contents.append({"role": "user", "parts": [{"text": request.question}]})
+
+        client = _genai_module.Client(api_key=api_key)
+        model_name = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+        gemini_response = client.models.generate_content(
+            model=model_name,
+            contents=contents,
+            config=_genai_module.types.GenerateContentConfig(
+                system_instruction=DENTAL_SYSTEM_PROMPT,
+                max_output_tokens=600,
+                temperature=0.6,
+            )
+        )
+        answer = gemini_response.text.strip()
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"AI service error: {str(exc)}"
+        ) from exc
+
+    # Save to history
+    now = datetime.now().isoformat()
+    with get_db() as conn:
+        conn.execute(
+            "INSERT INTO chat_history (session_id, role, message, source, created_at) VALUES (?, ?, ?, ?, ?)",
+            (request.session_id, "user", request.question, "dental_ai", now)
+        )
+        conn.execute(
+            "INSERT INTO chat_history (session_id, role, message, source, created_at) VALUES (?, ?, ?, ?, ?)",
+            (request.session_id, "bot", answer, "dental_ai", now)
+        )
+
+    return AskResponse(answer=answer)

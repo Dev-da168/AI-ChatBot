@@ -1349,6 +1349,115 @@ body {
 
 }
 
+/* ============================================================
+   AI KNOWLEDGE CHAT
+============================================================ */
+
+.ai-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.ai-chat-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+}
+
+.ai-chat-header .chat-icon {
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+}
+
+.ai-message .message-content {
+    background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+    border: 1px solid #bae6fd;
+    color: #0c4a6e;
+    border-bottom-left-radius: 4px;
+}
+
+.ai-disclaimer {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 6px;
+    font-style: italic;
+    padding: 0 2px;
+}
+
+.ai-setup-notice {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #92400e;
+    line-height: 1.6;
+}
+
+.ai-setup-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.ai-setup-notice code {
+    background: rgba(0,0,0,0.08);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.ask-ai-button {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 12px;
+}
+
+.ask-ai-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+}
+
+.ai-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.ai-suggestion {
+    padding: 7px 12px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #0369a1;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.ai-suggestion:hover {
+    background: #0ea5e9;
+    color: white;
+    border-color: #0ea5e9;
+}
+
 </style>
 
 </head>
@@ -1419,11 +1528,18 @@ body {
 
         <button
             class="start-button"
+            id="startClinicBtn"
             onclick="startChat()"
         >
+            💬 Clinic Assistant
+        </button>
 
-            Start Chat
-
+        <button
+            class="ask-ai-button"
+            id="startAiBtn"
+            onclick="startAiChat()"
+        >
+            🧠 Ask Dental AI
         </button>
 
 
@@ -1433,13 +1549,83 @@ body {
 
 
 <!-- ============================================================
-     CHAT SCREEN
+     AI DENTAL KNOWLEDGE SCREEN
 ============================================================ -->
 
 <div
     class="chat-screen"
+    id="aiChatScreen"
+    style="display:none"
+>
+
+    <div class="chat-container">
+
+        <!-- HEADER -->
+        <div class="chat-header ai-chat-header">
+
+            <button
+                class="back-button"
+                onclick="closeAiChat()"
+            >
+                ←
+            </button>
+
+            <div class="chat-icon">
+                🧠
+            </div>
+
+            <div class="header-info">
+                <h2>
+                    Dental AI
+                    <span class="ai-badge">GEMINI</span>
+                </h2>
+                <p>
+                    <span class="online-dot"></span>
+                    <span>Ask me anything dental</span>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- CHAT -->
+        <div
+            class="chat-box"
+            id="aiChatBox"
+        >
+        </div>
+
+        <!-- INPUT -->
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="aiMessageInput"
+                placeholder="e.g. Why do my gums bleed?"
+                autocomplete="off"
+            >
+
+            <button
+                class="send-button"
+                id="aiSendButton"
+                onclick="sendAiMessage()"
+                style="background: linear-gradient(135deg, #0ea5e9, #6366f1);"
+            >
+                ➤
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- original chat screen -->
+<div
+    class="chat-screen"
     id="chatScreen"
 >
+
 
     <div class="chat-container">
 
@@ -3994,6 +4180,187 @@ messageInput.addEventListener(
 
     }
 );
+
+
+/* ============================================================
+   AI DENTAL KNOWLEDGE CHAT
+============================================================ */
+
+const aiChatScreen   = document.getElementById("aiChatScreen");
+const aiChatBox      = document.getElementById("aiChatBox");
+const aiMessageInput = document.getElementById("aiMessageInput");
+const aiSendButton   = document.getElementById("aiSendButton");
+
+if (aiMessageInput) {
+    aiMessageInput.addEventListener(
+        "keydown",
+        function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendAiMessage();
+            }
+        }
+    );
+}
+
+const AI_SUGGESTIONS = [
+    "How often should I brush?",
+    "What causes tooth decay?",
+    "Why do my gums bleed?",
+    "Is teeth whitening safe?",
+    "What is a root canal?",
+    "How to fix bad breath?",
+    "When should kids see a dentist?",
+    "What foods damage teeth?"
+];
+
+function startAiChat() {
+    const welcome = document.getElementById("welcomeScreen");
+    const aiScreen = document.getElementById("aiChatScreen");
+    const box = document.getElementById("aiChatBox");
+    const input = document.getElementById("aiMessageInput");
+
+    if (welcome) welcome.style.display = "none";
+    if (aiScreen) aiScreen.style.display = "flex";
+
+    if (box && box.children.length === 0) {
+        addAiMessage(
+            "Hi! I'm Dr. Dento 🦷\n\n"
+            + "I can answer your dental health questions — from brushing tips "
+            + "to understanding treatments.\n\n"
+            + "What would you like to know?",
+            false
+        );
+        showAiSuggestions();
+    }
+
+    if (input) input.focus();
+}
+
+function closeAiChat() {
+    const welcome = document.getElementById("welcomeScreen");
+    const aiScreen = document.getElementById("aiChatScreen");
+    if (aiScreen) aiScreen.style.display = "none";
+    if (welcome) welcome.style.display = "flex";
+}
+
+function showAiSuggestions() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "ai-suggestions";
+    AI_SUGGESTIONS.forEach(function(q) {
+        const btn = document.createElement("button");
+        btn.className = "ai-suggestion";
+        btn.textContent = q;
+        btn.onclick = function() {
+            wrapper.remove();
+            sendAiMessage(q);
+        };
+        wrapper.appendChild(btn);
+    });
+    aiChatBox.appendChild(wrapper);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+}
+
+function addAiUserMessage(text) {
+    const div = document.createElement("div");
+    div.className = "message user-message";
+    div.innerHTML = `<div class="message-wrapper"><div class="message-content">${escapeHtml(text)}</div></div>`;
+    aiChatBox.appendChild(div);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+}
+
+function addAiMessage(text, showDisclaimer) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message bot-message ai-message";
+
+    // Render basic markdown: **bold**, bullet lists
+    let html = escapeHtml(text)
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/^- (.+)$/gm, "• $1")
+        .replace(/\n/g, "<br>");
+
+    let disclaimerHtml = "";
+    if (showDisclaimer) {
+        disclaimerHtml = `<div class="ai-disclaimer">⚕️ For educational purposes only. Always consult your dentist.</div>`;
+    }
+
+    wrapper.innerHTML = `
+        <div class="message-wrapper">
+            <div class="message-content">${html}</div>
+            ${disclaimerHtml}
+        </div>
+    `;
+    aiChatBox.appendChild(wrapper);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+}
+
+function showAiTyping() {
+    const id = "ai-typing-" + Date.now();
+    const div = document.createElement("div");
+    div.id = id;
+    div.className = "message bot-message";
+    div.innerHTML = `<div class="message-wrapper"><div class="message-content"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+    aiChatBox.appendChild(div);
+    aiChatBox.scrollTop = aiChatBox.scrollHeight;
+    return id;
+}
+
+async function sendAiMessage(preset) {
+    const message = preset || aiMessageInput.value.trim();
+    if (!message) return;
+
+    addAiUserMessage(message);
+    aiMessageInput.value = "";
+
+    aiSendButton.disabled = true;
+    const typingId = showAiTyping();
+
+    try {
+        const response = await fetch("/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: message })
+        });
+
+        const data = await response.json();
+        removeTyping(typingId);
+
+        if (!response.ok) {
+            // Check if it's a configuration error
+            const detail = data.detail || "";
+            if (detail.includes("GEMINI_API_KEY")) {
+                const notice = document.createElement("div");
+                notice.className = "ai-setup-notice";
+                notice.innerHTML = `
+                    <strong>⚙️ API Key Required</strong>
+                    To use the Dental AI, you need a free Google Gemini API key:<br><br>
+                    1. Visit <strong>aistudio.google.com/app/apikey</strong><br>
+                    2. Click <strong>"Create API key"</strong><br>
+                    3. Copy the key and open the <code>.env</code> file in your project<br>
+                    4. Replace <code>your_api_key_here</code> with your key<br>
+                    5. Restart the server
+                `;
+                const msgDiv = document.createElement("div");
+                msgDiv.className = "message bot-message ai-message";
+                msgDiv.innerHTML = `<div class="message-wrapper"></div>`;
+                msgDiv.querySelector(".message-wrapper").appendChild(notice);
+                aiChatBox.appendChild(msgDiv);
+            } else {
+                addAiMessage("Sorry, I ran into an issue: " + detail, false);
+            }
+        } else {
+            addAiMessage(data.answer, true);
+            showAiSuggestions();
+        }
+
+    } catch (err) {
+        removeTyping(typingId);
+        addAiMessage("Sorry, I couldn't connect to the server. Please try again.", false);
+    } finally {
+        aiSendButton.disabled = false;
+        aiMessageInput.focus();
+    }
+}
 
 </script>
 
