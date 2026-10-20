@@ -160,6 +160,10 @@ if os.path.exists(IMG_DIR):
     app.mount("/img", StaticFiles(directory=IMG_DIR), name="img")
     app.mount("/api/img", StaticFiles(directory=IMG_DIR), name="api_img")
 
+ASSET_DIR = os.path.dirname(os.path.abspath(__file__))
+app.mount("/css", StaticFiles(directory=os.path.join(ASSET_DIR, "css")), name="css")
+app.mount("/js", StaticFiles(directory=os.path.join(ASSET_DIR, "js")), name="js")
+
 
 # ============================================================
 # DATA MODELS
