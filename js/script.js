@@ -2592,12 +2592,17 @@ async function sendAiMessage(preset) {
 
     aiSendButton.disabled = true;
     const typingId = showAiTyping();
+    const controller = new AbortController();
+    const requestTimeout = setTimeout(function() {
+        controller.abort();
+    }, 30000);
 
     try {
         const response = await fetch("/ask", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: message })
+            body: JSON.stringify({ question: message }),
+            signal: controller.signal
         });
 
         const data = await response.json();
@@ -2633,8 +2638,13 @@ async function sendAiMessage(preset) {
 
     } catch (err) {
         removeTyping(typingId);
-        addAiMessage("Sorry, I couldn't connect to the server. Please try again.", false);
+        if (err.name === "AbortError") {
+            addAiMessage("The AI response is taking longer than expected. Please try again.", false);
+        } else {
+            addAiMessage("Sorry, I couldn't connect to the server. Please try again.", false);
+        }
     } finally {
+        clearTimeout(requestTimeout);
         aiSendButton.disabled = false;
         aiMessageInput.focus();
     }

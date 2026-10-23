@@ -7,11 +7,15 @@ from datetime import date, datetime, timedelta
 import sqlite3
 import json
 import os
+import uuid
+
 try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
     pass
+
+_genai_module = None
 try:
     from google import genai as _genai_module
     _GEMINI_AVAILABLE = True
@@ -29,7 +33,9 @@ except ImportError:
 
 # On serverless environments like Vercel, the root filesystem is read-only.
 # We store the SQLite DB in /tmp when running on Vercel.
-if os.environ.get("VERCEL"):
+if os.environ.get("CLINIC_DB_PATH"):
+    DB_PATH = os.environ["CLINIC_DB_PATH"]
+elif os.environ.get("VERCEL"):
     DB_PATH = "/tmp/clinic.db"
 else:
     DB_PATH = os.path.join(os.path.dirname(__file__), "clinic.db")
@@ -37,8 +43,9 @@ else:
 
 def get_db():
     """Open a database connection with dict-like row access."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=15)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA busy_timeout = 15000")
     return conn
 
 
@@ -93,10 +100,7 @@ def init_db():
 
 
 # Ensure tables exist immediately on import (essential for serverless environments)
-try:
-    init_db()
-except Exception:
-    pass
+init_db()
 
 
 # ============================================================
@@ -720,17 +724,17 @@ def appointment_times(selected_date: str):
 
 class AppointmentRequest(BaseModel):
 
-    services: list[str] | None = None
+    services: list[str] | None = Field(default=None, min_length=1, max_length=5)
 
-    service: str | None = None
+    service: str | None = Field(default=None, min_length=1, max_length=120)
 
-    date: str
+    date: str = Field(min_length=10, max_length=10)
 
-    time: str
+    time: str = Field(min_length=1, max_length=20)
 
-    name: str
+    name: str = Field(min_length=1, max_length=120)
 
-    phone: str
+    phone: str = Field(min_length=1, max_length=40)
 
 
 @app.post("/appointment")
@@ -744,12 +748,41 @@ def create_appointment(
         else []
     )
 
+    services = [service.strip() for service in services if service.strip()]
+
     if not services:
 
         return {
             "success": False,
             "message": "Select at least one service."
         }
+
+    valid_services = set(SERVICE_PRICES)
+    normalized_services = []
+    for service in services:
+        matched_service = next(
+            (
+                service_name
+                for service_name in valid_services
+                if service_name.lower() == service.lower()
+            ),
+            None
+        )
+        if matched_service is None:
+            raise HTTPException(
+                status_code=422,
+                detail="One or more selected services are unavailable."
+            )
+        normalized_services.append(matched_service)
+    services = list(dict.fromkeys(normalized_services))
+
+    name = appointment.name.strip()
+    phone = appointment.phone.strip()
+    if not name or not phone:
+        raise HTTPException(
+            status_code=422,
+            detail="Name and phone number are required."
+        )
 
     # Check date
 
@@ -777,33 +810,50 @@ def create_appointment(
             "message": "The clinic is closed on Sunday."
         }
 
+    if selected_date < date.today():
+        raise HTTPException(
+            status_code=422,
+            detail="Appointment date cannot be in the past."
+        )
 
-    # Check if time is already booked (from database)
+    valid_times = [
+        "8:00 AM",
+        "9:00 AM",
+        "10:00 AM",
+        "11:00 AM",
+        "1:00 PM",
+        "2:00 PM",
+        "3:00 PM",
+        "4:00 PM",
+        "5:00 PM"
+    ]
+    if appointment.time not in valid_times:
+        raise HTTPException(
+            status_code=422,
+            detail="Select a valid appointment time."
+        )
 
+    # Create appointment ID
+
+    appointment_id = "APT-" + uuid.uuid4().hex[:12].upper()
+
+    service_str = ", ".join(services)
+    now = datetime.now().isoformat()
+
+    # Serialize booking writes so two requests cannot claim the same slot.
     with get_db() as conn:
+        conn.execute("BEGIN IMMEDIATE")
         existing = conn.execute(
             "SELECT id FROM appointments WHERE date = ? AND time = ?",
             (appointment.date, appointment.time)
         ).fetchone()
 
-    if existing:
-        return {
-            "success": False,
-            "message": "This time slot is already booked."
-        }
+        if existing:
+            return {
+                "success": False,
+                "message": "This time slot is already booked."
+            }
 
-
-    # Create appointment ID
-
-    appointment_id = (
-        "APT-"
-        + datetime.now().strftime("%Y%m%d%H%M%S")
-    )
-
-    service_str = ", ".join(services)
-    now = datetime.now().isoformat()
-
-    with get_db() as conn:
         conn.execute(
             """
             INSERT INTO appointments (id, services, service, date, time, name, phone, created_at)
@@ -815,8 +865,8 @@ def create_appointment(
                 service_str,
                 appointment.date,
                 appointment.time,
-                appointment.name,
-                appointment.phone,
+                name,
+                phone,
                 now
             )
         )
@@ -827,8 +877,8 @@ def create_appointment(
         "service": service_str,
         "date": appointment.date,
         "time": appointment.time,
-        "name": appointment.name,
-        "phone": appointment.phone
+        "name": name,
+        "phone": phone
     }
 
     return {
@@ -965,8 +1015,7 @@ def create_product_order(order: ProductOrderRequest):
     now = datetime.now().isoformat()
 
     with get_db() as conn:
-        count = conn.execute("SELECT COUNT(*) FROM product_orders").fetchone()[0]
-        order_id = "ORD-" + str(count + 1).zfill(6)
+        order_id = "ORD-" + uuid.uuid4().hex[:12].upper()
 
         conn.execute(
             """
@@ -1044,8 +1093,8 @@ Rules:
 
 
 class AskRequest(BaseModel):
-    question: str
-    session_id: str = "default"
+    question: str = Field(min_length=1, max_length=2000)
+    session_id: str = Field(default="default", min_length=1, max_length=128)
 
 
 class AskResponse(BaseModel):
@@ -1067,6 +1116,8 @@ def ask_dental(request: AskRequest):
             status_code=503,
             detail="AI service unavailable. Install google-genai."
         )
+
+    assert _genai_module is not None
 
     if not api_key or api_key == "your_api_key_here":
         raise HTTPException(
@@ -1101,8 +1152,19 @@ def ask_dental(request: AskRequest):
         # Add the current user message
         contents.append({"role": "user", "parts": [{"text": request.question}]})
 
-        client = _genai_module.Client(api_key=api_key)
-        model_name = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+        client = _genai_module.Client(
+            api_key=api_key,
+            http_options=_genai_module.types.HttpOptions(
+                timeout=12000,
+                retry_options=_genai_module.types.HttpRetryOptions(
+                    attempts=2,
+                    initial_delay=0.5,
+                    max_delay=1.0,
+                    jitter=0,
+                ),
+            ),
+        )
+        model_name = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
         gemini_response = client.models.generate_content(
             model=model_name,
             contents=contents,
@@ -1112,6 +1174,8 @@ def ask_dental(request: AskRequest):
                 temperature=0.6,
             )
         )
+        if not gemini_response.text or not gemini_response.text.strip():
+            raise RuntimeError("AI service returned an empty response.")
         answer = gemini_response.text.strip()
 
     except Exception as exc:
