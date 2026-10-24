@@ -1094,6 +1094,7 @@ Rules:
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
+    language: str = Field(default="en", pattern="^(en|km)$")
     session_id: str = Field(default="default", min_length=1, max_length=128)
 
 
@@ -1169,7 +1170,14 @@ def ask_dental(request: AskRequest):
             model=model_name,
             contents=contents,
             config=_genai_module.types.GenerateContentConfig(
-                system_instruction=DENTAL_SYSTEM_PROMPT,
+                system_instruction=(
+                    DENTAL_SYSTEM_PROMPT
+                    + (
+                        "\n\nRespond in Khmer."
+                        if request.language == "km"
+                        else "\n\nRespond in English."
+                    )
+                ),
                 max_output_tokens=600,
                 temperature=0.6,
             )
