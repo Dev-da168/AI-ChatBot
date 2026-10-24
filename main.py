@@ -1144,6 +1144,7 @@ Rules:
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
+    language: str = Field(default="en", pattern="^(en|km)$")
     session_id: str = Field(default="default", min_length=1, max_length=128)
     language: str = Field(default="en", min_length=2, max_length=2)
 

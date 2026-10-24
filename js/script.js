@@ -59,9 +59,33 @@ const translations = {
         subtitle: "Customer Service Assistant",
         welcomeDescription: "Our virtual assistant can help you make appointments, learn about dental services, and get information about common dental concerns.",
         startChat: "Start Chat",
+        startAiChat: "🧠 Ask Dental AI",
         chatTitle: "Dental Assistant",
         online: "Online",
         messagePlaceholder: "Ask about your teeth...",
+        aiTitle: "Dental AI",
+        aiSubtitle: "Ask me anything dental",
+        aiMessagePlaceholder: "e.g. Why do my gums bleed?",
+        aiGreeting: "Hi! I'm Dr. Dento 🦷\n\nI can answer your dental health questions — from brushing tips to understanding treatments.\n\nWhat would you like to know?",
+        aiDisclaimer: "⚕️ For educational purposes only. Always consult your dentist.",
+        aiSuggestionBrush: "How often should I brush?",
+        aiSuggestionDecay: "What causes tooth decay?",
+        aiSuggestionGums: "Why do my gums bleed?",
+        aiSuggestionWhitening: "Is teeth whitening safe?",
+        aiSuggestionRootCanal: "What is a root canal?",
+        aiSuggestionBreath: "How to fix bad breath?",
+        aiSuggestionKids: "When should kids see a dentist?",
+        aiSuggestionFoods: "What foods damage teeth?",
+        aiApiKeyTitle: "⚙️ API Key Required",
+        aiApiKeyNotice: `To use the Dental AI, you need a free Google Gemini API key:<br><br>
+                    1. Visit <strong>aistudio.google.com/app/apikey</strong><br>
+                    2. Click <strong>"Create API key"</strong><br>
+                    3. Copy the key and open the <code>.env</code> file in your project<br>
+                    4. Replace <code>your_api_key_here</code> with your key<br>
+                    5. Restart the server`,
+        aiError: "Sorry, the AI service encountered a problem. Please try again.",
+        aiTimeout: "The AI response is taking longer than expected. Please try again.",
+        aiConnectionError: "Sorry, I couldn't connect to the server. Please try again.",
         greeting: "Hello! 👋 Welcome to our dental clinic.\n\nHow can I help you today?",
         appointmentOption: "📅 Make an Appointment",
         serviceOption: "🏥 Dental Services",
@@ -193,9 +217,33 @@ const translations = {
         subtitle: "ជំនួយការសេវាកម្មអតិថិជន",
         welcomeDescription: "ជំនួយការនិម្មិតរបស់យើងអាចជួយកក់ការណាត់ជួប ស្វែងយល់អំពីសេវាកម្មទន្តសាស្ត្រ និងទទួលព័ត៌មានអំពីបញ្ហាសុខភាពមាត់ធ្មេញទូទៅ។",
         startChat: "ចាប់ផ្តើម",
+        startAiChat: "🧠 សួរ AI ទន្តសាស្ត្រ",
         chatTitle: "ជំនួយការទន្តសាស្ត្រ",
         online: "នៅលើបណ្ដាញ",
         messagePlaceholder: "សួរអំពីសុខភាពមាត់ធ្មេញ...",
+        aiTitle: "AI ទន្តសាស្ត្រ",
+        aiSubtitle: "សួរខ្ញុំអំពីបញ្ហាសុខភាពមាត់ធ្មេញ",
+        aiMessagePlaceholder: "ឧ. ហេតុអ្វីបានជាអញ្ចាញធ្មេញខ្ញុំហូរឈាម?",
+        aiGreeting: "សួស្តី! ខ្ញុំគឺលោកវេជ្ជបណ្ឌិត ដេនតូ 🦷\n\nខ្ញុំអាចឆ្លើយសំណួររបស់អ្នកអំពីសុខភាពមាត់ធ្មេញ ចាប់ពីវិធីដុសធ្មេញ រហូតដល់ការពន្យល់អំពីការព្យាបាល។\n\nតើអ្នកចង់សួរអ្វីដែរ?",
+        aiDisclaimer: "⚕️ ព័ត៌មាននេះសម្រាប់គោលបំណងអប់រំប៉ុណ្ណោះ។ សូមពិគ្រោះជាមួយទន្តបណ្ឌិតរបស់អ្នកជានិច្ច។",
+        aiSuggestionBrush: "តើគួរដុសធ្មេញញឹកញាប់ប៉ុណ្ណា?",
+        aiSuggestionDecay: "តើអ្វីបណ្តាលឱ្យពុកធ្មេញ?",
+        aiSuggestionGums: "ហេតុអ្វីបានជាអញ្ចាញធ្មេញហូរឈាម?",
+        aiSuggestionWhitening: "តើការធ្វើឱ្យធ្មេញសមានសុវត្ថិភាពទេ?",
+        aiSuggestionRootCanal: "តើការព្យាបាលឫសធ្មេញជាអ្វី?",
+        aiSuggestionBreath: "តើធ្វើដូចម្តេចដើម្បីបំបាត់ក្លិនមាត់?",
+        aiSuggestionKids: "តើកុមារគួរទៅជួបទន្តបណ្ឌិតនៅពេលណា?",
+        aiSuggestionFoods: "តើអាហារអ្វីខ្លះបំផ្លាញធ្មេញ?",
+        aiApiKeyTitle: "⚙️ ត្រូវការសោ API",
+        aiApiKeyNotice: `ដើម្បីប្រើ AI ទន្តសាស្ត្រ អ្នកត្រូវការសោ Google Gemini API ឥតគិតថ្លៃ៖<br><br>
+                    1. ចូលទៅកាន់ <strong>aistudio.google.com/app/apikey</strong><br>
+                    2. ចុច <strong>"Create API key"</strong><br>
+                    3. ចម្លងសោ រួចបើកឯកសារ <code>.env</code> ក្នុងគម្រោងរបស់អ្នក<br>
+                    4. ជំនួស <code>your_api_key_here</code> ដោយសោរបស់អ្នក<br>
+                    5. ចាប់ផ្តើមម៉ាស៊ីនមេឡើងវិញ`,
+        aiError: "សូមអភ័យទោស សេវាកម្ម AI មានបញ្ហា។ សូមព្យាយាមម្តងទៀត។",
+        aiTimeout: "ការឆ្លើយតបរបស់ AI ចំណាយពេលយូរជាងធម្មតា។ សូមព្យាយាមម្តងទៀត។",
+        aiConnectionError: "សូមអភ័យទោស មិនអាចភ្ជាប់ទៅម៉ាស៊ីនមេបានទេ។ សូមព្យាយាមម្តងទៀត។",
         greeting: "ជំរាបសួរ! 👋 សូមស្វាគមន៍មកកាន់គ្លីនិកធ្មេញរបស់យើង។\n\nតើខ្ញុំអាចជួយអ្វីអ្នកបានខ្លះ?",
         appointmentOption: "📅 កក់ការណាត់ជួប",
         serviceOption: "🏥 សេវាកម្មទន្តសាស្ត្រ",
@@ -577,9 +625,14 @@ function setLanguage(language) {
     }
 
     document.querySelector(".start-button").textContent = text("startChat");
+    document.getElementById("startAiBtn").textContent = text("startAiChat");
     document.getElementById("chatTitle").textContent = text("chatTitle");
     document.getElementById("onlineText").textContent = text("online");
     messageInput.placeholder = text("messagePlaceholder");
+    document.getElementById("aiTitle").textContent = text("aiTitle");
+    document.getElementById("aiSubtitle").textContent = text("aiSubtitle");
+    aiMessageInput.placeholder = text("aiMessagePlaceholder");
+    refreshAiTranslations();
 
 }
 
@@ -2729,7 +2782,16 @@ if (aiComposer) {
 }
 
 function getAiSuggestions() {
-    return translations[currentLanguage].aiSuggestions;
+    return [
+    "aiSuggestionBrush",
+    "aiSuggestionDecay",
+    "aiSuggestionGums",
+    "aiSuggestionWhitening",
+    "aiSuggestionRootCanal",
+    "aiSuggestionBreath",
+    "aiSuggestionKids",
+    "aiSuggestionFoods"
+    ];
 }
 
 function startAiChat() {
@@ -2770,7 +2832,7 @@ function toggleAiSidebar(forceOpen) {
 function startNewAiChat(focusInput = true) {
     activeAiSessionId = createAiSessionId();
     aiChatBox.innerHTML = "";
-    addAiMessage(text("aiWelcome"), false);
+    addAiMessage(text("aiGreeting"), false, "aiGreeting");
     showAiSuggestions();
     renderAiHistoryActiveState();
     toggleAiSidebar(false);
@@ -2855,10 +2917,11 @@ function showAiSuggestions() {
     getAiSuggestions().forEach(function(q) {
         const btn = document.createElement("button");
         btn.className = "ai-suggestion";
-        btn.textContent = q;
+        btn.dataset.aiTranslationKey = q;
+        btn.textContent = text(q);
         btn.onclick = function() {
             wrapper.remove();
-            sendAiMessage(q);
+            sendAiMessage(text(btn.dataset.aiTranslationKey));
         };
         wrapper.appendChild(btn);
     });
@@ -2874,9 +2937,12 @@ function addAiUserMessage(text) {
     aiChatBox.scrollTop = aiChatBox.scrollHeight;
 }
 
-function addAiMessage(messageText, showDisclaimer) {
+function addAiMessage(messageText, showDisclaimer, translationKey) {
     const wrapper = document.createElement("div");
     wrapper.className = "message bot-message ai-message";
+    const translationAttributes = translationKey
+        ? `data-ai-translation-key="${translationKey}" data-ai-translation-html="true"`
+        : "";
 
     // Render basic markdown: **bold**, bullet lists
     let html = escapeHtml(messageText)
@@ -2886,17 +2952,28 @@ function addAiMessage(messageText, showDisclaimer) {
 
     let disclaimerHtml = "";
     if (showDisclaimer) {
-        disclaimerHtml = `<div class="ai-disclaimer">⚕️ ${escapeHtml(text("aiDisclaimerShort"))}</div>`;
+        disclaimerHtml = `<div class="ai-disclaimer" data-ai-translation-key="aiDisclaimer">${escapeHtml(text("aiDisclaimer"))}</div>`;
     }
 
     wrapper.innerHTML = `
         <div class="message-wrapper">
-            <div class="message-content">${html}</div>
+            <div class="message-content" ${translationAttributes}>${html}</div>
             ${disclaimerHtml}
         </div>
     `;
     aiChatBox.appendChild(wrapper);
     aiChatBox.scrollTop = aiChatBox.scrollHeight;
+}
+
+function refreshAiTranslations() {
+    document.querySelectorAll("[data-ai-translation-key]").forEach(function(element) {
+        const translation = text(element.dataset.aiTranslationKey);
+        if (element.dataset.aiTranslationHtml === "true") {
+            element.innerHTML = escapeHtml(translation).replace(/\n/g, "<br>");
+        } else {
+            element.textContent = translation;
+        }
+    });
 }
 
 function showAiTyping() {
@@ -2956,9 +3033,8 @@ async function sendAiMessage(preset) {
                 const notice = document.createElement("div");
                 notice.className = "ai-setup-notice";
                 notice.innerHTML = `
-                    <strong>⚙️ ${escapeHtml(text("aiApiKeyRequired"))}</strong><br>
-                    ${escapeHtml(text("aiApiKeyInstructions"))}<br><br>
-                    <strong>aistudio.google.com/app/apikey</strong>
+                    <strong data-ai-translation-key="aiApiKeyTitle">${text("aiApiKeyTitle")}</strong>
+                    <span data-ai-translation-key="aiApiKeyNotice" data-ai-translation-html="true">${text("aiApiKeyNotice")}</span>
                 `;
                 const msgDiv = document.createElement("div");
                 msgDiv.className = "message bot-message ai-message";
@@ -2966,7 +3042,8 @@ async function sendAiMessage(preset) {
                 msgDiv.querySelector(".message-wrapper").appendChild(notice);
                 aiChatBox.appendChild(msgDiv);
             } else {
-                addAiMessage(text("aiIssuePrefix") + detail, false);
+                console.error("Dental AI request failed:", detail);
+                addAiMessage(text("aiError"), false, "aiError");
             }
         } else {
             addAiMessage(data.answer, true);
@@ -2977,9 +3054,9 @@ async function sendAiMessage(preset) {
     } catch (err) {
         removeTyping(typingId);
         if (err.name === "AbortError") {
-            addAiMessage(text("aiTimeout"), false);
+            addAiMessage(text("aiTimeout"), false, "aiTimeout");
         } else {
-            addAiMessage(text("aiConnectionError"), false);
+            addAiMessage(text("aiConnectionError"), false, "aiConnectionError");
         }
     } finally {
         clearTimeout(requestTimeout);
