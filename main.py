@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -618,22 +618,70 @@ def chat(request: ChatRequest):
 # ============================================================
 
 @app.get("/chat/history")
-def chat_history(session_id: str = "default", limit: int = 50):
+def chat_history(
+    session_id: str = "default",
+    limit: int = Query(default=50, ge=1, le=200),
+    source: str | None = None,
+):
     """Return the last *limit* messages for a given session."""
     with get_db() as conn:
-        rows = conn.execute(
-            """
-            SELECT id, session_id, role, message, created_at
-            FROM chat_history
-            WHERE session_id = ?
-            ORDER BY id DESC
-            LIMIT ?
-            """,
-            (session_id, limit)
-        ).fetchall()
+        if source:
+            rows = conn.execute(
+                """
+                SELECT id, session_id, role, message, created_at
+                FROM chat_history
+                WHERE session_id = ? AND source = ?
+                ORDER BY id DESC
+                LIMIT ?
+                """,
+                (session_id, source, limit)
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                """
+                SELECT id, session_id, role, message, created_at
+                FROM chat_history
+                WHERE session_id = ?
+                ORDER BY id DESC
+                LIMIT ?
+                """,
+                (session_id, limit)
+            ).fetchall()
 
     history = [dict(row) for row in reversed(rows)]
     return {"session_id": session_id, "history": history}
+
+
+@app.get("/chat/sessions")
+def chat_sessions(source: str = "dental_ai", limit: int = 100):
+    """List recent conversations with a short title for the history sidebar."""
+    limit = max(1, min(limit, 200))
+    with get_db() as conn:
+        rows = conn.execute(
+            """
+            SELECT
+                session_id,
+                COALESCE(
+                    (SELECT message
+                     FROM chat_history AS first_message
+                     WHERE first_message.session_id = history.session_id
+                       AND first_message.source = history.source
+                       AND first_message.role = 'user'
+                     ORDER BY first_message.id
+                     LIMIT 1),
+                    'Dental health conversation'
+                ) AS title,
+                MAX(created_at) AS updated_at
+            FROM chat_history AS history
+            WHERE source = ?
+            GROUP BY session_id
+            ORDER BY updated_at DESC
+            LIMIT ?
+            """,
+            (source, limit)
+        ).fetchall()
+
+    return {"sessions": [dict(row) for row in rows]}
 
 
 @app.delete("/chat/history")
@@ -1089,12 +1137,15 @@ Rules:
 4. Keep answers concise (2-5 short paragraphs max).
 5. Never diagnose a patient. Suggest professional evaluation instead.
 6. Use emojis sparingly (1-2 per response) to keep things friendly.
+7. Respond in the language requested for this conversation. If Khmer is
+   requested, write the full answer in natural Khmer script.
 """
 
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
     session_id: str = Field(default="default", min_length=1, max_length=128)
+    language: str = Field(default="en", min_length=2, max_length=2)
 
 
 class AskResponse(BaseModel):
@@ -1108,6 +1159,12 @@ class AskResponse(BaseModel):
 @app.post("/ask", response_model=AskResponse)
 def ask_dental(request: AskRequest):
     """Answer dental knowledge questions using Google Gemini."""
+
+    if request.language not in {"en", "km"}:
+        raise HTTPException(
+            status_code=422,
+            detail="Language must be 'en' or 'km'."
+        )
 
     api_key = os.environ.get("GEMINI_API_KEY", "")
 
@@ -1150,7 +1207,15 @@ def ask_dental(request: AskRequest):
                 "parts": [{"text": row["message"]}]
             })
         # Add the current user message
-        contents.append({"role": "user", "parts": [{"text": request.question}]})
+        language_instruction = (
+            "Answer entirely in Khmer using Khmer script. Do not answer in English.\n\n"
+            if request.language == "km"
+            else "Answer entirely in English.\n\n"
+        )
+        contents.append({
+            "role": "user",
+            "parts": [{"text": language_instruction + request.question}]
+        })
 
         client = _genai_module.Client(
             api_key=api_key,
@@ -1165,18 +1230,56 @@ def ask_dental(request: AskRequest):
             ),
         )
         model_name = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
+        system_instruction = (
+            DENTAL_SYSTEM_PROMPT
+            + (
+                "\n\nThe user's selected response language is Khmer (ភាសាខ្មែរ). "
+                "Write every part of the response in natural Khmer script. "
+                "Do not answer in English, even if the question is in English. "
+                "Keep proper names and standard dental terms only when needed."
+                if request.language == "km"
+                else "\n\nThe user's selected response language is English. "
+                "Write every part of the response in English."
+            )
+        )
+        generation_config = _genai_module.types.GenerateContentConfig(
+            system_instruction=system_instruction,
+            max_output_tokens=600,
+            temperature=0.6,
+        )
         gemini_response = client.models.generate_content(
             model=model_name,
             contents=contents,
-            config=_genai_module.types.GenerateContentConfig(
-                system_instruction=DENTAL_SYSTEM_PROMPT,
-                max_output_tokens=600,
-                temperature=0.6,
-            )
+            config=generation_config,
         )
         if not gemini_response.text or not gemini_response.text.strip():
             raise RuntimeError("AI service returned an empty response.")
         answer = gemini_response.text.strip()
+        if request.language == "km" and not any(
+            "\u1780" <= character <= "\u17ff" for character in answer
+        ):
+            correction = client.models.generate_content(
+                model=model_name,
+                contents=[{
+                    "role": "user",
+                    "parts": [{
+                        "text": (
+                            "Rewrite the following dental-health answer entirely "
+                            "in natural Khmer script. Do not use English except for "
+                            "proper names that cannot be translated:\n\n" + answer
+                        )
+                    }]
+                }],
+                config=generation_config,
+            )
+            if not correction.text or not any(
+                "\u1780" <= character <= "\u17ff"
+                for character in correction.text
+            ):
+                raise RuntimeError(
+                    "AI service did not return a Khmer-language answer. Please try again."
+                )
+            answer = correction.text.strip()
 
     except Exception as exc:
         raise HTTPException(

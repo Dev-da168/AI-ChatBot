@@ -113,66 +113,55 @@
     id="aiChatScreen"
     style="display:none"
 >
+    <aside class="ai-sidebar" id="aiSidebar">
+        <div class="ai-sidebar-brand">
+            <span class="ai-brand-mark">✦</span>
+            <span id="aiBrandName">Dr. Dento</span>
+            <button class="ai-sidebar-close" type="button" onclick="toggleAiSidebar(false)" aria-label="Close history">×</button>
+        </div>
+        <button class="ai-new-chat" type="button" id="aiNewChatBtn" onclick="startNewAiChat()">＋ <span id="aiNewChatText">New chat</span></button>
+        <div class="ai-history-heading" id="aiHistoryHeading">RECENT CHATS</div>
+        <nav class="ai-history-list" id="aiHistoryList" aria-label="Chat history"></nav>
+        <div class="ai-sidebar-footer">
+            <span class="ai-footer-icon">🦷</span>
+            <span><strong id="aiAssistantTitle">Dental health assistant</strong><small id="aiAssistantTagline">Friendly guidance, anytime</small></span>
+        </div>
+    </aside>
 
-    <div class="chat-container">
-
-        <!-- HEADER -->
-        <div class="chat-header ai-chat-header">
-
-            <button
-                class="back-button"
-                onclick="closeAiChat()"
-            >
-                ←
-            </button>
-
-            <div class="chat-icon">
-                🧠
+    <main class="ai-workspace">
+        <header class="ai-topbar">
+            <button class="ai-menu-button" type="button" onclick="toggleAiSidebar()" aria-label="Toggle conversation history">☰</button>
+            <div class="ai-topbar-title">
+                <strong id="aiTopbarTitle">Dental AI</strong>
+                <span class="ai-badge">GEMINI</span>
             </div>
-
-            <div class="header-info">
-                <h2>
-                    Dental AI
-                    <span class="ai-badge">GEMINI</span>
-                </h2>
-                <p>
-                    <span class="online-dot"></span>
-                    <span>Ask me anything dental</span>
-                </p>
+            <span class="ai-topbar-status"><span class="online-dot"></span> <span id="aiStatusText">Dental health assistant</span></span>
+            <label class="ai-language-control" for="aiLanguageSelect">
+                <span id="aiLanguageLabel">Reply in</span>
+                <select id="aiLanguageSelect" onchange="setLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="km">ខ្មែរ</option>
+                </select>
+            </label>
+        </header>
+        <div class="ai-conversation" id="aiChatBox" aria-live="polite"></div>
+        <form class="ai-composer" id="aiComposer">
+            <div class="ai-composer-inner">
+                <input
+                    type="text"
+                    id="aiMessageInput"
+                    placeholder="Ask a dental health question..."
+                    autocomplete="off"
+                    maxlength="2000"
+                    aria-label="Ask a dental health question"
+                >
+                <button class="ai-microphone-button" type="button" id="aiMicrophoneButton" onclick="toggleSpeechInput()" aria-label="Start voice input" title="Start voice input">🎙</button>
+                <button class="send-button" type="submit" id="aiSendButton" aria-label="Send message">➤</button>
             </div>
-
-        </div>
-
-        <!-- CHAT -->
-        <div
-            class="chat-box"
-            id="aiChatBox"
-        >
-        </div>
-
-        <!-- INPUT -->
-        <div class="input-area">
-
-            <input
-                type="text"
-                id="aiMessageInput"
-                placeholder="e.g. Why do my gums bleed?"
-                autocomplete="off"
-            >
-
-            <button
-                class="send-button"
-                id="aiSendButton"
-                onclick="sendAiMessage()"
-                style="background: linear-gradient(135deg, #0ea5e9, #6366f1);"
-            >
-                ➤
-            </button>
-
-        </div>
-
-    </div>
-
+            <p class="ai-speech-status" id="aiSpeechStatus" role="status" aria-live="polite"></p>
+            <p id="aiDisclaimerText">Dr. Dento can share general information, but can’t diagnose. Please consult your dentist for personal advice.</p>
+        </form>
+    </main>
 </div>
 
 

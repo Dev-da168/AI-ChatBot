@@ -147,7 +147,46 @@ const translations = {
         cleaning: "Teeth Cleaning",
         whitening: "Teeth Whitening",
         filling: "Dental Filling",
-        extraction: "Tooth Extraction"
+        extraction: "Tooth Extraction",
+        clinicAssistant: "Clinic Assistant",
+        askDentalAI: "Ask Dental AI",
+        newChat: "New chat",
+        recentChats: "RECENT CHATS",
+        aiBrandName: "Dr. Dento",
+        assistantTagline: "Dental health assistant",
+        friendlyGuidance: "Friendly guidance, anytime",
+        dentalAiTitle: "Dental AI",
+        languageLabel: "Reply in",
+        aiPrompt: "Ask a dental health question...",
+        aiDisclaimer: "Dr. Dento can share general information, but can’t diagnose. Please consult your dentist for personal advice.",
+        aiDisclaimerShort: "For educational purposes only. Always consult your dentist.",
+        aiHistoryEmpty: "Your conversations will appear here.",
+        dentalConversation: "Dental health conversation",
+        aiLoadingError: "I couldn't load that conversation. Please try again.",
+        aiTimeout: "The AI response is taking longer than expected. Please try again.",
+        aiConnectionError: "Sorry, I couldn't connect to the server. Please try again.",
+        aiIssuePrefix: "Sorry, I ran into an issue: ",
+        aiApiKeyRequired: "API key required",
+        aiApiKeyInstructions: "To use Dental AI, configure a Google Gemini API key in your .env file and restart the server.",
+        voiceStart: "Start voice input",
+        voiceListening: "Listening...",
+        voiceUnsupported: "Voice input is not supported in this browser. Try Chrome or Edge.",
+        voiceNoSpeech: "No speech was heard. Please try again.",
+        voiceDenied: "Microphone access was denied. Allow microphone access and try again.",
+        voiceLanguageUnsupported: "Speech recognition for this language is not supported by your browser.",
+        voiceError: "Voice input failed. Please try again.",
+        aiQuestionAria: "Ask a dental health question",
+        aiWelcome: "Hi! I'm Dr. Dento 🦷\n\nI can answer your dental health questions — from brushing tips to understanding treatments.\n\nWhat would you like to know?",
+        aiSuggestions: [
+            "How often should I brush?",
+            "What causes tooth decay?",
+            "Why do my gums bleed?",
+            "Is teeth whitening safe?",
+            "What is a root canal?",
+            "How can I improve bad breath?",
+            "When should children see a dentist?",
+            "What foods can damage teeth?"
+        ]
     },
     km: {
         title: "គ្លីនិកធ្មេញ",
@@ -242,7 +281,46 @@ const translations = {
         cleaning: "សម្អាតធ្មេញ",
         whitening: "ធ្វើឱ្យធ្មេញស",
         filling: "ប៉ះធ្មេញ",
-        extraction: "ដកធ្មេញ"
+        extraction: "ដកធ្មេញ",
+        clinicAssistant: "ជំនួយការគ្លីនិក",
+        askDentalAI: "សួរអ្នកជំនួយការទន្តសាស្ត្រ",
+        newChat: "ជជែកថ្មី",
+        recentChats: "ការជជែកថ្មីៗ",
+        aiBrandName: "Dr. Dento",
+        assistantTagline: "ជំនួយការព័ត៌មានសុខភាពមាត់ធ្មេញ",
+        friendlyGuidance: "ណែនាំដោយមិត្តភាព សម្រាប់អ្នកជានិច្ច",
+        dentalAiTitle: "AI ទន្តសាស្ត្រ",
+        languageLabel: "ភាសាចម្លើយ",
+        aiPrompt: "សួរសំណួរអំពីសុខភាពមាត់ធ្មេញ...",
+        aiDisclaimer: "Dr. Dento អាចផ្តល់ព័ត៌មានទូទៅ ប៉ុន្តែមិនអាចធ្វើរោគវិនិច្ឆ័យបានទេ។ សូមពិគ្រោះជាមួយទន្តបណ្ឌិតសម្រាប់ការណែនាំផ្ទាល់ខ្លួន។",
+        aiDisclaimerShort: "ព័ត៌មាននេះសម្រាប់ការអប់រំប៉ុណ្ណោះ។ សូមពិគ្រោះជាមួយទន្តបណ្ឌិតជានិច្ច។",
+        aiHistoryEmpty: "ការជជែករបស់អ្នកនឹងបង្ហាញនៅទីនេះ។",
+        dentalConversation: "ការជជែកទន្តសាស្ត្រ",
+        aiLoadingError: "ខ្ញុំមិនអាចផ្ទុកការជជែកនោះបានទេ។ សូមព្យាយាមម្តងទៀត។",
+        aiTimeout: "ការឆ្លើយតបរបស់ AI ចំណាយពេលយូរជាងការរំពឹងទុក។ សូមព្យាយាមម្តងទៀត។",
+        aiConnectionError: "សូមអភ័យទោស ខ្ញុំមិនអាចភ្ជាប់ទៅម៉ាស៊ីនមេបានទេ។ សូមព្យាយាមម្តងទៀត។",
+        aiIssuePrefix: "សូមអភ័យទោស មានបញ្ហា៖ ",
+        aiApiKeyRequired: "ត្រូវការសោ API",
+        aiApiKeyInstructions: "ដើម្បីប្រើ Dental AI សូមកំណត់សោ Google Gemini API ក្នុងឯកសារ .env ហើយចាប់ផ្តើមម៉ាស៊ីនមេឡើងវិញ។",
+        voiceStart: "ចាប់ផ្តើមបញ្ចូលសំឡេង",
+        voiceListening: "កំពុងស្តាប់...",
+        voiceUnsupported: "កម្មវិធីរុករកនេះមិនគាំទ្រការបញ្ចូលសំឡេងទេ។ សូមប្រើ Chrome ឬ Edge។",
+        voiceNoSpeech: "មិនបានឮសំឡេងទេ។ សូមព្យាយាមម្តងទៀត។",
+        voiceDenied: "មិនអាចចូលប្រើមីក្រូហ្វូនបានទេ។ សូមអនុញ្ញាតការប្រើមីក្រូហ្វូន ហើយព្យាយាមម្តងទៀត។",
+        voiceLanguageUnsupported: "កម្មវិធីរុករកនេះមិនគាំទ្រការសម្គាល់សំឡេងសម្រាប់ភាសានេះទេ។",
+        voiceError: "ការបញ្ចូលសំឡេងមិនបានសម្រេចទេ។ សូមព្យាយាមម្តងទៀត។",
+        aiQuestionAria: "សួរសុខភាពធ្មេញ",
+        aiWelcome: "សួស្តី! ខ្ញុំជាអ្នកជំនួយការទន្តសាស្ត្រ Dr. Dento 🦷\n\nខ្ញុំអាចឆ្លើយសំណួរអំពីសុខភាពធ្មេញរបស់អ្នក — ចាប់ពីគន្លឹះការដុសធ្មេញ ដល់ការយល់ដឹងអំពីការព្យាបាល។\n\nតើអ្នកចង់ដឹងអ្វី?",
+        aiSuggestions: [
+            "តើខ្ញុំគួរដុសធ្មេញប៉ុន្មានដងក្នុងមួយថ្ងៃ?",
+            "តើអ្វីបណ្តាលឱ្យធ្មេញពុក?",
+            "ហេតុអ្វីអញ្ចាញធ្មេញរបស់ខ្ញុំហូរឈាម?",
+            "តើការធ្វើឱ្យធ្មេញសមានសុវត្ថិភាពទេ?",
+            "ការព្យាបាលឫសធ្មេញគឺជាអ្វី?",
+            "តើខ្ញុំអាចកាត់បន្ថយក្លិនមាត់មិនល្អដោយរបៀបណា?",
+            "តើកុមារគួរទៅជួបទន្តបណ្ឌិតនៅពេលណា?",
+            "តើអាហារអ្វីខ្លះអាចបំផ្លាញធ្មេញ?"
+        ]
     }
 };
 
@@ -387,7 +465,12 @@ function formatAppointmentDate(date) {
 
 function setLanguage(language) {
 
+    const previousLanguage = currentLanguage;
     currentLanguage = language === "km" ? "km" : "en";
+    localStorage.setItem("dental-chat-language", currentLanguage);
+    if (previousLanguage !== currentLanguage && activeSpeechRecognition) {
+        activeSpeechRecognition.stop();
+    }
     document.documentElement.lang =
         currentLanguage === "km" ? "km" : "en";
 
@@ -408,9 +491,80 @@ function setLanguage(language) {
         String(currentLanguage === "km")
     );
 
+    document.title = currentLanguage === "km"
+        ? "គ្លីនិកធ្មេញ"
+        : "Dental Clinic Assistant";
+
     document.getElementById("welcomeTitle").textContent = text("title");
     document.getElementById("welcomeSubtitle").textContent = text("subtitle");
     document.getElementById("welcomeDescription").textContent = text("welcomeDescription");
+    const startClinicBtn = document.getElementById("startClinicBtn");
+    if (startClinicBtn) {
+        startClinicBtn.textContent = "💬 " + text("clinicAssistant");
+    }
+    const startAiBtn = document.getElementById("startAiBtn");
+    if (startAiBtn) {
+        startAiBtn.textContent = "🧠 " + text("askDentalAI");
+    }
+
+    const aiBrandName = document.getElementById("aiBrandName");
+    if (aiBrandName) {
+        aiBrandName.textContent = text("aiBrandName");
+    }
+    const aiNewChatText = document.getElementById("aiNewChatText");
+    if (aiNewChatText) {
+        aiNewChatText.textContent = text("newChat");
+    }
+    const aiHistoryHeading = document.getElementById("aiHistoryHeading");
+    if (aiHistoryHeading) {
+        aiHistoryHeading.textContent = text("recentChats");
+    }
+    const aiAssistantTitle = document.getElementById("aiAssistantTitle");
+    if (aiAssistantTitle) {
+        aiAssistantTitle.textContent = text("assistantTagline");
+    }
+    const aiAssistantTagline = document.getElementById("aiAssistantTagline");
+    if (aiAssistantTagline) {
+        aiAssistantTagline.textContent = text("friendlyGuidance");
+    }
+    const aiTopbarTitle = document.getElementById("aiTopbarTitle");
+    if (aiTopbarTitle) {
+        aiTopbarTitle.textContent = text("dentalAiTitle");
+    }
+    const aiLanguageSelect = document.getElementById("aiLanguageSelect");
+    if (aiLanguageSelect) {
+        aiLanguageSelect.value = currentLanguage;
+    }
+    const aiLanguageLabel = document.getElementById("aiLanguageLabel");
+    if (aiLanguageLabel) {
+        aiLanguageLabel.textContent = text("languageLabel");
+    }
+    const aiStatusText = document.getElementById("aiStatusText");
+    if (aiStatusText) {
+        aiStatusText.textContent = text("assistantTagline");
+    }
+    const aiMessageInputField = document.getElementById("aiMessageInput");
+    if (aiMessageInputField) {
+        aiMessageInputField.placeholder = text("aiPrompt");
+        aiMessageInputField.setAttribute("aria-label", text("aiQuestionAria"));
+    }
+    const aiDisclaimerText = document.getElementById("aiDisclaimerText");
+    if (aiDisclaimerText) {
+        aiDisclaimerText.textContent = text("aiDisclaimer");
+    }
+    const aiMicrophoneButton = document.getElementById("aiMicrophoneButton");
+    if (aiMicrophoneButton) {
+        aiMicrophoneButton.setAttribute("aria-label", text("voiceStart"));
+        aiMicrophoneButton.title = text("voiceStart");
+    }
+    const aiSpeechStatus = document.getElementById("aiSpeechStatus");
+    if (aiSpeechStatus && !activeSpeechRecognition) {
+        aiSpeechStatus.textContent = "";
+    }
+    if (aiChatBox && aiChatBox.querySelector(".ai-suggestions")) {
+        showAiSuggestions();
+    }
+
     const appointmentsFeature = document.getElementById("appointmentsFeature");
     const servicesFeature = document.getElementById("servicesFeature");
 
@@ -2468,49 +2622,129 @@ const aiChatScreen   = document.getElementById("aiChatScreen");
 const aiChatBox      = document.getElementById("aiChatBox");
 const aiMessageInput = document.getElementById("aiMessageInput");
 const aiSendButton   = document.getElementById("aiSendButton");
+const aiHistoryList  = document.getElementById("aiHistoryList");
+const aiComposer     = document.getElementById("aiComposer");
+let activeAiSessionId = "";
+let activeSpeechRecognition = null;
 
-if (aiMessageInput) {
-    aiMessageInput.addEventListener(
-        "keydown",
-        function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendAiMessage();
+function toggleSpeechInput() {
+    if (activeSpeechRecognition) {
+        activeSpeechRecognition.stop();
+        return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition
+        || window.webkitSpeechRecognition;
+    const microphoneButton = document.getElementById("aiMicrophoneButton");
+    const speechStatus = document.getElementById("aiSpeechStatus");
+
+    if (!SpeechRecognition) {
+        speechStatus.textContent = text("voiceUnsupported");
+        return;
+    }
+
+    let recognition;
+    try {
+        recognition = new SpeechRecognition();
+        recognition.lang = currentLanguage === "km" ? "km-KH" : "en-US";
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        let finalTranscript = "";
+        let recognitionFailed = false;
+
+        recognition.onstart = function() {
+            activeSpeechRecognition = recognition;
+            microphoneButton.classList.add("is-listening");
+            microphoneButton.setAttribute("aria-pressed", "true");
+            microphoneButton.setAttribute("aria-label", text("voiceListening"));
+            microphoneButton.title = text("voiceListening");
+            speechStatus.textContent = text("voiceListening");
+        };
+
+        recognition.onresult = function(event) {
+            let interimTranscript = "";
+            for (let index = event.resultIndex; index < event.results.length; index++) {
+                const result = event.results[index];
+                if (result.isFinal) {
+                    finalTranscript += result[0].transcript;
+                } else {
+                    interimTranscript += result[0].transcript;
+                }
             }
-        }
-    );
+            if (interimTranscript) {
+                speechStatus.textContent = finalTranscript + interimTranscript;
+            }
+            if (finalTranscript) {
+                const separator = aiMessageInput.value.trim() ? " " : "";
+                aiMessageInput.value += separator + finalTranscript.trim();
+                speechStatus.textContent = "";
+                aiMessageInput.focus();
+            }
+        };
+
+        recognition.onerror = function(event) {
+            recognitionFailed = true;
+            const errorMessages = {
+                "not-allowed": "voiceDenied",
+                "service-not-allowed": "voiceDenied",
+                "language-not-supported": "voiceLanguageUnsupported",
+                "no-speech": "voiceNoSpeech"
+            };
+            speechStatus.textContent = text(
+                errorMessages[event.error] || "voiceError"
+            );
+        };
+
+        recognition.onend = function() {
+            activeSpeechRecognition = null;
+            microphoneButton.classList.remove("is-listening");
+            microphoneButton.setAttribute("aria-pressed", "false");
+            microphoneButton.setAttribute("aria-label", text("voiceStart"));
+            microphoneButton.title = text("voiceStart");
+            if (!recognitionFailed && !finalTranscript) {
+                speechStatus.textContent = "";
+            }
+        };
+
+        recognition.start();
+    } catch (error) {
+        activeSpeechRecognition = null;
+        speechStatus.textContent = text("voiceError");
+        console.error("Failed to start speech recognition:", error);
+    }
 }
 
-const AI_SUGGESTIONS = [
-    "How often should I brush?",
-    "What causes tooth decay?",
-    "Why do my gums bleed?",
-    "Is teeth whitening safe?",
-    "What is a root canal?",
-    "How to fix bad breath?",
-    "When should kids see a dentist?",
-    "What foods damage teeth?"
-];
+function createAiSessionId() {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return window.crypto.randomUUID();
+    }
+    return "dental-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+}
+
+if (aiComposer) {
+    aiComposer.addEventListener("submit", function(event) {
+        event.preventDefault();
+        sendAiMessage();
+    });
+}
+
+function getAiSuggestions() {
+    return translations[currentLanguage].aiSuggestions;
+}
 
 function startAiChat() {
     const welcome = document.getElementById("welcomeScreen");
     const aiScreen = document.getElementById("aiChatScreen");
-    const box = document.getElementById("aiChatBox");
     const input = document.getElementById("aiMessageInput");
 
     if (welcome) welcome.style.display = "none";
     if (aiScreen) aiScreen.style.display = "flex";
 
-    if (box && box.children.length === 0) {
-        addAiMessage(
-            "Hi! I'm Dr. Dento 🦷\n\n"
-            + "I can answer your dental health questions — from brushing tips "
-            + "to understanding treatments.\n\n"
-            + "What would you like to know?",
-            false
-        );
-        showAiSuggestions();
+    if (!activeAiSessionId) {
+        startNewAiChat(false);
+        toggleAiSidebar(window.innerWidth > 800);
     }
+    loadAiHistoryList();
 
     if (input) input.focus();
 }
@@ -2518,14 +2752,107 @@ function startAiChat() {
 function closeAiChat() {
     const welcome = document.getElementById("welcomeScreen");
     const aiScreen = document.getElementById("aiChatScreen");
+    toggleAiSidebar(false);
     if (aiScreen) aiScreen.style.display = "none";
     if (welcome) welcome.style.display = "flex";
 }
 
+function toggleAiSidebar(forceOpen) {
+    const sidebar = document.getElementById("aiSidebar");
+    if (!sidebar) return;
+    const shouldOpen = typeof forceOpen === "boolean"
+        ? forceOpen
+        : !sidebar.classList.contains("is-open");
+    sidebar.classList.toggle("is-open", shouldOpen);
+    document.getElementById("aiChatScreen").classList.toggle("history-open", shouldOpen);
+}
+
+function startNewAiChat(focusInput = true) {
+    activeAiSessionId = createAiSessionId();
+    aiChatBox.innerHTML = "";
+    addAiMessage(text("aiWelcome"), false);
+    showAiSuggestions();
+    renderAiHistoryActiveState();
+    toggleAiSidebar(false);
+    if (focusInput) aiMessageInput.focus();
+}
+
+async function loadAiHistoryList() {
+    try {
+        const response = await fetch("/chat/sessions?source=dental_ai");
+        if (!response.ok) throw new Error("Could not load conversation history.");
+        const data = await response.json();
+        renderAiHistory(data.sessions || []);
+    } catch (error) {
+        console.error("Failed to load Dental AI history:", error);
+    }
+}
+
+function renderAiHistory(sessions) {
+    if (!aiHistoryList) return;
+    aiHistoryList.innerHTML = "";
+    if (!sessions.length) {
+        const empty = document.createElement("p");
+        empty.className = "ai-history-empty";
+        empty.textContent = text("aiHistoryEmpty");
+        aiHistoryList.appendChild(empty);
+        return;
+    }
+
+    sessions.forEach(function(session) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "ai-history-item";
+        button.dataset.sessionId = session.session_id;
+        button.textContent = session.title || text("dentalConversation");
+        button.title = button.textContent;
+        button.onclick = function() {
+            loadAiConversation(session.session_id);
+        };
+        aiHistoryList.appendChild(button);
+    });
+    renderAiHistoryActiveState();
+}
+
+function renderAiHistoryActiveState() {
+    if (!aiHistoryList) return;
+    aiHistoryList.querySelectorAll(".ai-history-item").forEach(function(item) {
+        item.classList.toggle("active", item.dataset.sessionId === activeAiSessionId);
+    });
+}
+
+async function loadAiConversation(sessionId) {
+    try {
+        const response = await fetch(
+            "/chat/history?session_id=" + encodeURIComponent(sessionId)
+            + "&source=dental_ai&limit=200"
+        );
+        if (!response.ok) throw new Error("Could not load this conversation.");
+        const data = await response.json();
+        activeAiSessionId = sessionId;
+        aiChatBox.innerHTML = "";
+        (data.history || []).forEach(function(message) {
+            if (message.role === "user") {
+                addAiUserMessage(message.message);
+            } else {
+                addAiMessage(message.message, true);
+            }
+        });
+        renderAiHistoryActiveState();
+        toggleAiSidebar(false);
+    } catch (error) {
+        console.error("Failed to load Dental AI conversation:", error);
+        addAiMessage(text("aiLoadingError"), false);
+    }
+}
+
 function showAiSuggestions() {
+    aiChatBox.querySelectorAll(".ai-suggestions").forEach(function(existing) {
+        existing.remove();
+    });
     const wrapper = document.createElement("div");
     wrapper.className = "ai-suggestions";
-    AI_SUGGESTIONS.forEach(function(q) {
+    getAiSuggestions().forEach(function(q) {
         const btn = document.createElement("button");
         btn.className = "ai-suggestion";
         btn.textContent = q;
@@ -2547,19 +2874,19 @@ function addAiUserMessage(text) {
     aiChatBox.scrollTop = aiChatBox.scrollHeight;
 }
 
-function addAiMessage(text, showDisclaimer) {
+function addAiMessage(messageText, showDisclaimer) {
     const wrapper = document.createElement("div");
     wrapper.className = "message bot-message ai-message";
 
     // Render basic markdown: **bold**, bullet lists
-    let html = escapeHtml(text)
+    let html = escapeHtml(messageText)
         .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
         .replace(/^- (.+)$/gm, "• $1")
         .replace(/\n/g, "<br>");
 
     let disclaimerHtml = "";
     if (showDisclaimer) {
-        disclaimerHtml = `<div class="ai-disclaimer">⚕️ For educational purposes only. Always consult your dentist.</div>`;
+        disclaimerHtml = `<div class="ai-disclaimer">⚕️ ${escapeHtml(text("aiDisclaimerShort"))}</div>`;
     }
 
     wrapper.innerHTML = `
@@ -2587,6 +2914,16 @@ async function sendAiMessage(preset) {
     const message = preset || aiMessageInput.value.trim();
     if (!message) return;
 
+    const responseLanguage = /[\u1780-\u17FF]/.test(message)
+        ? "km"
+        : currentLanguage;
+    if (responseLanguage !== currentLanguage) {
+        setLanguage(responseLanguage);
+    }
+
+    aiChatBox.querySelectorAll(".ai-suggestions").forEach(function(existing) {
+        existing.remove();
+    });
     addAiUserMessage(message);
     aiMessageInput.value = "";
 
@@ -2601,7 +2938,11 @@ async function sendAiMessage(preset) {
         const response = await fetch("/ask", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: message }),
+            body: JSON.stringify({
+                question: message,
+                session_id: activeAiSessionId,
+                language: responseLanguage
+            }),
             signal: controller.signal
         });
 
@@ -2615,13 +2956,9 @@ async function sendAiMessage(preset) {
                 const notice = document.createElement("div");
                 notice.className = "ai-setup-notice";
                 notice.innerHTML = `
-                    <strong>⚙️ API Key Required</strong>
-                    To use the Dental AI, you need a free Google Gemini API key:<br><br>
-                    1. Visit <strong>aistudio.google.com/app/apikey</strong><br>
-                    2. Click <strong>"Create API key"</strong><br>
-                    3. Copy the key and open the <code>.env</code> file in your project<br>
-                    4. Replace <code>your_api_key_here</code> with your key<br>
-                    5. Restart the server
+                    <strong>⚙️ ${escapeHtml(text("aiApiKeyRequired"))}</strong><br>
+                    ${escapeHtml(text("aiApiKeyInstructions"))}<br><br>
+                    <strong>aistudio.google.com/app/apikey</strong>
                 `;
                 const msgDiv = document.createElement("div");
                 msgDiv.className = "message bot-message ai-message";
@@ -2629,19 +2966,20 @@ async function sendAiMessage(preset) {
                 msgDiv.querySelector(".message-wrapper").appendChild(notice);
                 aiChatBox.appendChild(msgDiv);
             } else {
-                addAiMessage("Sorry, I ran into an issue: " + detail, false);
+                addAiMessage(text("aiIssuePrefix") + detail, false);
             }
         } else {
             addAiMessage(data.answer, true);
             showAiSuggestions();
+            await loadAiHistoryList();
         }
 
     } catch (err) {
         removeTyping(typingId);
         if (err.name === "AbortError") {
-            addAiMessage("The AI response is taking longer than expected. Please try again.", false);
+            addAiMessage(text("aiTimeout"), false);
         } else {
-            addAiMessage("Sorry, I couldn't connect to the server. Please try again.", false);
+            addAiMessage(text("aiConnectionError"), false);
         }
     } finally {
         clearTimeout(requestTimeout);
@@ -2649,3 +2987,5 @@ async function sendAiMessage(preset) {
         aiMessageInput.focus();
     }
 }
+
+setLanguage(localStorage.getItem("dental-chat-language") || "en");
