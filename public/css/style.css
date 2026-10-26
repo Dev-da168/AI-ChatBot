@@ -2156,7 +2156,22 @@ textarea:focus-visible {
     cursor: pointer;
 }
 
-.ai-menu-button:hover {
+.ai-back-button {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid #e1e9eb;
+    border-radius: 10px;
+    background: #fff;
+    color: #41606d;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.ai-menu-button:hover,
+.ai-back-button:hover {
     background: #f4f8f9;
 }
 
